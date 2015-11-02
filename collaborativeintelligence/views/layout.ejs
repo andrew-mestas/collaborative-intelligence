@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Collaborative Intelligence</title>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/materialize/css/materialize.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+</head>
+<body>
+ <nav>
+    <div class="nav-wrapper blue darken-3">
+      <a href="/" class="brand-logo">Ci</a>
+      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+      <%if (currentUser) { %>
+        <li><a href="logout">Log out</a></li>
+        <li><a href="#">World</a></li>
+        <li><a href="/ask">Ask</a></li>
+        <li><a href="#">Pro</a></li>
+      <% } else { %>
+        <li><a href="login">Sign Up / Login</a></li>
+      <% } %>
+
+      </ul>
+      <ul class="side-nav" id="mobile-demo">
+      	<li><a href="/">Collaborative Intelligence</a></li>
+      <%if (currentUser) { %>
+        <li><a href="logout">Log out</a></li>
+        <li><a href="#">World</a></li>
+        <li><a href="/ask">Ask</a></li>
+        <li><a href="#">Pro</a></li>
+      <% } else { %>
+        <li><a href="login">Sign Up / Login</a></li>
+      <% } %>
+
+      </ul>
+    </div>
+  </nav>
+ <% include alerts %>
+ <%- body %>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="/materialize/js/materialize.min.js"></script>
+<script>
+	$(document).ready(function(){
+	 $(".button-collapse").sideNav();
+	});
+</script>
+</body>
+</html>

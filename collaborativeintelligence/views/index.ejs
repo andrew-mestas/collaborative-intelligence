@@ -1,0 +1,82 @@
+
+    
+    <!-- Page Layout here -->
+    <div class="row">
+    </div>
+    <div class="row">
+
+
+
+      <div class="col s3">
+      <h6> <%=name%> </h6>
+        </div>
+      <div class="col s3">
+      MOST POPULAR<br><br> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+      quis nostrud exercitation ullamco <br><br> 
+      FRIENDS<br><br>
+      <%if(friends){ %>
+      <%friends.friend.forEach(function(friend){ %>
+      <h6><%=friend.name%></h6>
+      <% });%>
+      <%}%>
+
+      </div>
+    <%if(data){%>  
+    <%var totalQuestions = 0;%>
+    <%for(var r=0; r<data.data.questions.length; r++) { %>
+    <%totalQuestions += (Object.keys(data.data.questions[r]).length);%>
+    <%}%>
+    <%}%>
+
+      <div class="col s5">
+        <table>
+          <thead>
+          
+            <tr>
+              <th data-field="category">Category</th>
+              <th data-field="question">Question</th>
+              <th data-field="answer">Answer</th>
+              <th data-field="rank">Rank</th>
+            </tr>
+          </thead>
+
+        <tbody>
+
+    <%if(data){%>  
+        <%var count=-1;%>
+
+        <%for(var t=0; t < Object.keys(data.categories).length; t++) {%>
+        <%for(var i = 0; i < Object.keys(data.data.questions[t]).length; i++) { %>
+          <tr>
+              <%count++;%>
+            <td><%=data.categories[t]%></td>
+            <td><%=data.data.questions[t][count]%></td>
+          <td>
+        <%for(var c=0; c < Object.keys(data.data.answers[count]).length; c++) { %>
+            <%=data.data.answers[count][c]%><br>
+         <%}%>
+        </td>
+         <td>
+         <%for(var c=0; c < Object.keys(data.data.ranks[count]).length; c++) { %>
+            <%=data.data.ranks[count][c]%><br>
+         <%}%>
+         </td>
+           <%}%>
+           <%}%>
+          </tr>
+<%}%>
+
+        </tbody>
+        </table>
+
+      </div>
+          
+      </div>
+
+    </div>
+    <script >
+
+
+</script>
+
