@@ -1,0 +1,118 @@
+<style>
+	#myChart{
+		width:100%;
+	}
+</style>
+<div class="row"></div>
+<div class="pollId" data-id="<%=data[0].dataValues.id%>"></div>
+<div class="row">
+	<div class="center col s10 offset-s1 green">
+	</div>
+	<div class="center col s10 offset-s1 blue light-3">
+	<%=data.question%>
+	</div>
+	<div class="row"></div>
+	<div class="center col s10 offset-s1">
+	<canvas id="myChart" width="600" height="200"></canvas>
+	</div>
+</div>
+<div class="center col s10 offset-s1">
+<%var count = 0;%>
+<%for(var i=0;i<data[1].length;i++){ %>
+<% if(i%2==0){%>
+<div class="choices" hidden>	<%=data[1][i]%><br></div>
+<a class="waves-effect waves-light btn clickable" id="<%=count%>"><%=data[1][i]%> </a>
+<%count++;%>
+<%} else {%>
+<div class="dataVals" data-val="<%=data[1][i]%>" hidden> </div>
+<%  }%>
+<%};%>
+</div>
+
+<a class="waves-effect waves-light btn closePoll" id="<%=data[0].id%>">Close this Poll</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+
+var socket = io();
+
+
+
+var colors = [
+    {
+        color:"#F7464A",
+        highlight: "#FF5A5E",
+    },
+    {
+        color: "#46BFBD",
+        highlight: "#5AD3D1",
+    },
+    {
+        color: "#FDB45C",
+        highlight: "#FFC870",
+    },
+    {
+    	color: "#D927DC",
+        highlight: "#F957FC",
+    },
+    {
+    	color: "#40B5D7",
+        highlight: "#88CEE2",
+    },
+    {
+    	color: "#E57130",
+        highlight: "#F7965F",
+    }
+];
+var newData = [];
+var length = $(".choices").length;
+var valuesToAdd = [];
+var val = $(".dataVals");
+for(var i=0; i< val.length;i++)
+{
+	valuesToAdd.push(parseInt(val[i].getAttribute("data-val")));
+}
+
+console.log(valuesToAdd);
+  for(var i=0;i<length;i++){
+
+     if(i !== "category" && i !== "question"){
+       var addTo = {value: valuesToAdd[i], color:"", highlight: "", label: ""};
+       addTo.label = $(".choices")[i].innerText;
+       addTo.color = colors[i].color;
+       addTo.highlight = colors[i].highlight;
+       newData.push(addTo);
+       var g = "#" + i.toString();
+       $(g)[0].style.background = colors[i].color;
+	}
+};
+
+var ctx = $("#myChart").get(0).getContext("2d");
+var myDoughnutChart = new Chart(ctx).Doughnut(newData);
+
+$(".clickable").click(function(){
+		var location = $(this)[0].id;
+		var pollId = $(".pollId").data("id");
+		var update = pollId+","+location+","+newData[location].label;
+
+		socket.emit('message',update);
+		myDoughnutChart.segments[location].value++;
+		myDoughnutChart.update();
+	});
+$(".closePoll").click(function(){
+
+	window.open("/closePoll/" + $(this)[0].id.toString(),"_self");
+});
+
+ socket.on('This is broadcast', function(msg){
+ 	if(msg[0] == $(".pollId").data("id")){
+ 	var vals = msg.split(",");
+ 	 myDoughnutChart.segments[vals[1]].value++;
+	 myDoughnutChart.update();
+	}
+
+  });
+
+
+</script>

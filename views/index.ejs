@@ -1,0 +1,100 @@
+
+    
+    <!-- Page Layout here -->
+    <div class="row">
+    </div>
+    <div class="row">
+
+
+
+      <div class="col s3">
+      <h6>PROFILE</h6>
+        </div>
+      <div class="col s3">
+      Current Questions<br><br>
+      <%console.log(questions);%>
+      <%if(questions){ %> 
+      <%for(var i=0;i<Object.keys(questions).length;i++){%>
+      <%if(questions[i].active){%>
+      <a href="poll/<%=questions[i].id%>"><h6><%=questions[i].question%> </h6></a>
+      <%}}}%><br><br> 
+        <%if(friends){ %>
+      FRIENDS<br><br>
+    
+      <%friends.friend.forEach(function(friend){ %>
+      <h6><%=friend.name%></h6>
+      <% });%>
+    <div class="row">
+     <div class="input-field col s12">
+      <form action="/friends/add" method="post">
+        <input id="friendEmail" type="email" name="friendEmail" class="validate" required="" aria-required="true">
+         <label for="friendEmail">Friend's Email</label>
+        </input>
+        <button>Add Friends</button>
+      </form>
+      </div>
+     </div>
+      <%}%>
+
+
+
+
+      </div>
+    Closed Questions
+    <%if(data){%>  
+    <%var totalQuestions = 0;%>
+    <%for(var r=0; r<data.data.questions.length; r++) { %>
+    <%totalQuestions += (Object.keys(data.data.questions[r]).length);%>
+    <%}%>
+    <%}%>
+
+      <div class="col s5">
+        <table>
+          <thead>          
+            <tr>
+              <th data-field="category">Category</th>
+              <th data-field="question">Question</th>
+              <th data-field="answer">Answer</th>
+              <th data-field="rank">Rank</th>
+            </tr>
+          </thead>
+
+        <tbody>
+
+    <%if(data){%>  
+        <%var count=-1;%>
+        <%console.log(data.data.answers);%>
+        <%for(var t=0; t < Object.keys(data.categories).length; t++) {%>
+        <%for(var i = 0; i < Object.keys(data.data.questions[t]).length; i++) { %>
+          <tr>
+              <%count++;%>
+            <td><%=data.categories[t]%></td>
+            <td><%=data.data.questions[t][count]%></td>
+          <td>
+        <%for(var d=0; d < Object.keys(data.data.answers[count]).length; d++) { %>
+            <%=data.data.answers[count][d]%><br>
+         <%}%>
+        </td>
+         <td>
+         <%for(var c=0; c < Object.keys(data.data.ranks[count]).length; c++) { %>
+            <%=data.data.ranks[count][c]%><br>
+         <%}%>
+         </td>
+           <%}%>
+           <%}%>
+          </tr>
+<%}%>
+
+        </tbody>
+        </table>
+
+      </div>
+          
+      </div>
+
+    </div>
+    <script >
+
+
+</script>
+
