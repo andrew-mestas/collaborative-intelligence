@@ -13,6 +13,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var CollabInt = require("./test.js");
 CollabInt = new CollabInt();
+
 app.use(session({
 	secret: "lubsijhawmno",
 	resave: false,

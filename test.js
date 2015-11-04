@@ -1,5 +1,11 @@
 var db = require("./models");
 var async = require("async")
+
+
+function CollabInt(){
+
+};
+
 // var categoryText = "Pets";
 // var questions = "What should I get cat or dog?";
 // var answer1   = "Cat";
@@ -29,9 +35,25 @@ var async = require("async")
 // var answers   = "Yes";
 // var answerRank = 45;
 
-function CollabInt(){
 
-};
+// var category = "Every Day",
+// 	question = "Does it look sunny or cloudy?";
+
+// var choices = [["Sunny", 0], ["Cloudy", 0], ["Neither" , 0]];
+
+// var userName = "Jerry";
+// var emailString = "jerry@do.com";
+// var passwordVal = "booyashazam";
+// var prolevelvalue = 22;
+
+// var userName = "Billy";
+// var emailString = "billy@do.com";
+// var passwordVal = "booyaTooya";
+// var prolevelvalue = 33;
+// var friendName = "Billy";
+// var emailString = "";
+// var passwordVal = "";
+
 
 
 
@@ -53,19 +75,6 @@ function CollabInt(){
 // 	com.destroy().then(function(){});
 // 	});
 // })
-
-// var userName = "Jerry";
-// var emailString = "jerry@do.com";
-// var passwordVal = "booyashazam";
-// var prolevelvalue = 22;
-
-// var userName = "Billy";
-// var emailString = "billy@do.com";
-// var passwordVal = "booyaTooya";
-// var prolevelvalue = 33;
-// var friendName = "Billy";
-// var emailString = "";
-// var passwordVal = "";
 
 
 
@@ -139,7 +148,8 @@ db.user.findOrCreate({where: {
 	name: userName,
 	email: emailString,
 	password: passwordVal,
-	prolevel: prolevelvalue || 0
+	prolevel: prolevelvalue || 0,
+	admin: false
 }}).spread(function(newUser, created){
 	console.log(newUser.get());
 	createdUser = created;
@@ -345,14 +355,14 @@ db.user.find({where: {
 
 			questionItem.forEach(function(qt, counter){
 				count= counter;
-				console.log("\nCategory:",qt.dataValues.name);
+				// console.log("\nCategory:",qt.dataValues.name);
 				data["categories"].push(qt.dataValues.name);
 			questionItem[cat].dataValues.questions.forEach(function(q, i){
 				questionsCat[que] = q.dataValues.question;
-				console.log(q.dataValues.question, que)
+				// console.log(q.dataValues.question, que)
 			answerItem[que].dataValues.answers.forEach(function(an, y){
-				console.log("Answer:",an.dataValues.answer,"\n");
-				console.log("Rank:",an.dataValues.rank,"\n");
+				// console.log("Answer:",an.dataValues.answer,"\n");
+				// console.log("Rank:",an.dataValues.rank,"\n");
 				var answerToPut = an.dataValues.answer;
 				var rankToPut = an.dataValues.rank;
 				answerList[y]  =  answerToPut;
@@ -404,11 +414,6 @@ db.user.find({where: {
 });
 
 };
-var category = "Every Day",
-	question = "Does it look sunny or cloudy?";
-
-var choices = [["Sunny", 0], ["Cloudy", 0], ["Neither" , 0]];
-
 
 var addChoices = function(choices, callback){
 	db.choice.findOrCreate({where:{
@@ -421,12 +426,13 @@ var addChoices = function(choices, callback){
 
 
 
-CollabInt.prototype.addPoll = function(category, question, choices, active, res){
+CollabInt.prototype.addPoll = function(category, question, choices, active, res, user){
 
 db.poll.findOrCreate({where:{
 	category: category,
 	question: question,
-	active: active
+	active: active,
+	userId: user
 }}).spread(function(poll, created){
 
 async.concat(choices, addChoices, function(err, results) {
@@ -440,7 +446,7 @@ async.concat(choices, addChoices, function(err, results) {
 });
 }
 
-CollabInt.prototype.getPoll= function(pollId, res){
+CollabInt.prototype.getPoll= function(pollId, res, user){
 	var data=[];
 	var inner=[];
 	var question = [];
@@ -455,7 +461,7 @@ CollabInt.prototype.getPoll= function(pollId, res){
 			});
 			question.push(poll.question,poll.category);
 			data.push(inner);
-			res.render("poll",{data: data, question: question});
+			res.render("poll",{data: data, question: question, user: poll.userId, viewing:user});
 		});
 	});
 }
@@ -464,6 +470,7 @@ CollabInt.prototype.closePoll = function(pollId, callback){
 	var data = [];
 	var inner = [];
 	db.poll.findById(pollId).then(function(poll){
+		if(poll.active){
 		poll.active = false;
 		poll.save();
 	db.choice.findAll({where:{
@@ -478,8 +485,11 @@ CollabInt.prototype.closePoll = function(pollId, callback){
 		});
 		callback.storeData(data);
 	});
-
+	} else {
+		return;
+	}
 	});
+
 }
 
 CollabInt.prototype.updatePoll = function(data){
@@ -499,14 +509,31 @@ CollabInt.prototype.updatePoll = function(data){
 		console.log(choice.value);
 		// choice.dataValues.value +=1;
 	});
-
-
 }
 
+CollabInt.prototype.addAdmin = function(admin, user){
+	db.user.find({where:{
+		name: user
+	}}).then(function(user){
+		user.admin = "true";
+		user.save;
+		console.log(admin,"created new admin:",user.name,"at",user.createdAt);
+	});
+}
 
-// test(category, question, true);
-// var c = new CollabInt();
-// c.storeData(data);
+// CollabInt.prototype.
+
+// // test(category, question, true);
+var c = new CollabInt();
+// c.addAdmin("Andrew","Sally Jo");
+
+db.user.find({where:{
+	name: "Billy Bob"
+	}}).then(function(user){
+		console.log(user.admin);
+	console.log(user.get());
+	});
+// // c.storeData(data);
 // c.addPoll(category, question, choices, true);
 // c.closePoll(2, c);
 // setTimeout(function(){console.log(friendObjG.friend[0].name);}, 3000);

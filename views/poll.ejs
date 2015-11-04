@@ -6,6 +6,7 @@
   color: white;
 }
 </style>
+
 <div class="row"></div>
 <div class="pollId" data-id="<%=data[0].dataValues.id%>"></div>
 <div class="row">
@@ -24,7 +25,7 @@
 <%var count = 0;%>
 <%for(var i=0;i<data[1].length;i++){ %>
 <% if(i%2==0){%>
-<div class="choices" hidden>	<%=data[1][i]%><br></div>
+<div class="choices" hidden>	<%=data[1][i]%></div>
 <a class="waves-effect waves-light btn clickable" id="<%=count%>"><%=data[1][i]%> </a>
 <%count++;%>
 <%} else {%>
@@ -32,8 +33,9 @@
 <%  }%>
 <%};%>
 </div>
-
+<%if(user === viewing){%>
 <a class="waves-effect waves-light btn closePoll" id="<%=data[0].id%>">Close this Poll</a>
+<%}%>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -73,6 +75,7 @@ var newData = [];
 var length = $(".choices").length;
 var valuesToAdd = [];
 var val = $(".dataVals");
+var toggle = true;
 for(var i=0; i< val.length;i++)
 {
 	valuesToAdd.push(parseInt(val[i].getAttribute("data-val")));
@@ -99,11 +102,19 @@ $(".clickable").click(function(){
 		var location = $(this)[0].id;
 		var pollId = $(".pollId").data("id");
 		var update = pollId+","+location+","+newData[location].label;
-
+if(toggle){
 		socket.emit('message',update);
 		myDoughnutChart.segments[location].value++;
 		myDoughnutChart.update();
+    var button = $(".clickable");
+    for(var i=0;i<button.length;i++){
+      button[i].className += " disabled";
+    }
+    toggle = false;
+  }
+
 	});
+
 $(".closePoll").click(function(){
 
 	window.open("/closePoll/" + $(this)[0].id.toString(),"_self");

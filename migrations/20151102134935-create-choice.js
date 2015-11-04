@@ -24,8 +24,9 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
-    });
+      },
+      
+    })
   },
   down: function(queryInterface, Sequelize) {
     return queryInterface.dropTable('choices');

@@ -102,6 +102,7 @@ router.post("/poll", function(req, res){
 	// dataF = req.body;
 	// // res.send(req.session);
 	// res.render("poll", {data: req.body, req : req});
+	// console.log(req.session.user);
 	var choices = [];
 	var innerArr = [];
 	var length = Object.keys(req.body).length;
@@ -116,7 +117,7 @@ router.post("/poll", function(req, res){
  	}
 
  	console.log(choices);
- 	CollabInt.addPoll(req.body.category, req.body.question, choices, true, res);
+ 	CollabInt.addPoll(req.body.category, req.body.question, choices, true, res, req.session.user);
 });
 
 router.get("/closePoll/:id", function(req, res){
@@ -127,7 +128,7 @@ router.get("/closePoll/:id", function(req, res){
 
 router.get("/poll/:id", function(req, res){
 	
-	CollabInt.getPoll(req.params.id, res);
+	CollabInt.getPoll(req.params.id, res, req.session.user);
 	// res.render("poll", {data: dataF});
 });
 module.exports = router;

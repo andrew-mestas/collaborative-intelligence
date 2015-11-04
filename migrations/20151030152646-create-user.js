@@ -20,8 +20,8 @@ module.exports = {
       prolevel: {
         type: Sequelize.INTEGER
       },
-      questionId: {
-        type: Sequelize.INTEGER
+      admin: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,
