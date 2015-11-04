@@ -90,12 +90,12 @@
             <td><%=data.data.questions[t][count]%></td>
           <td>
         <%for(var d=0; d < Object.keys(data.data.answers[count]).length; d++) { %>
-            <%=data.data.answers[count][d]%>
+            <%=data.data.answers[count][d]%><br>
          <%}%>
         </td>
          <td>
          <%for(var c=0; c < Object.keys(data.data.ranks[count]).length; c++) { %>
-            <%=data.data.ranks[count][c]%>
+            <%=data.data.ranks[count][c]%><br>
          <%}%>
          </td>
            <%}%>
