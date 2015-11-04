@@ -335,7 +335,7 @@ db.user.find({where: {
 
 		db.category.findAll({
 			order: "id",
-			include: [db.question]
+			include: [db.question],
 		}).then(function(questionItem){
 			console.log()
 		db.question.findAll({
@@ -443,6 +443,7 @@ async.concat(choices, addChoices, function(err, results) {
 CollabInt.prototype.getPoll= function(pollId, res){
 	var data=[];
 	var inner=[];
+	var question = [];
 	db.poll.findById(pollId).then(function(poll){
 		db.choice.findAll({where:{
 			pollId : pollId
@@ -452,8 +453,9 @@ CollabInt.prototype.getPoll= function(pollId, res){
 			console.log(g.choiceString, g.value);
 			inner.push(g.choiceString, g.value);
 			});
+			question.push(poll.question,poll.category);
 			data.push(inner);
-			res.render("poll",{data: data});
+			res.render("poll",{data: data, question: question});
 		});
 	});
 }

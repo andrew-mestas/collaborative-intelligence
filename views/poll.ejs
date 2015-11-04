@@ -2,14 +2,18 @@
 	#myChart{
 		width:100%;
 	}
+#question{
+  color: white;
+}
 </style>
 <div class="row"></div>
 <div class="pollId" data-id="<%=data[0].dataValues.id%>"></div>
 <div class="row">
 	<div class="center col s10 offset-s1 green">
 	</div>
-	<div class="center col s10 offset-s1 blue light-3">
-	<%=data.question%>
+	<div class="center col s10 offset-s1">
+   <h4><%=question[1]%></h4>
+	 <h4><%=question[0]%></h4>
 	</div>
 	<div class="row"></div>
 	<div class="center col s10 offset-s1">
