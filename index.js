@@ -6,6 +6,7 @@ var session = require("express-session");
 var ejsLayout = require("express-ejs-layouts");
 var collab = require("./controllers/collab");
 var friend = require("./controllers/friends");
+var messages = require("./controllers/messages");
 var flash = require("connect-flash");
 var db = require("./models");
 var http = require('http').Server(app);
@@ -70,7 +71,7 @@ io.on('connection', function(socket){
 app.use("/", collab);
 
 app.use("/friends", friend);
-
+app.use("/message", messages);
 
 ////////////////////////////////////////////////////
 ////////////////////////////////////////////////////

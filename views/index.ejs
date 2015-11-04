@@ -1,55 +1,73 @@
+<style>
+  .table{
+    height: 400px;
+    min-width: 200px;
+    color: black;
+    margin-left: 20px;
 
+  }
+ table.dataTable, thead{
+  background: #1E6AC2;
+ }
+ td{
+  background: #373832;
+  color: #67FFD5;
+ }
+
+  .lists{
+    height: 150px;
+  }
+</style>
     
     <!-- Page Layout here -->
     <div class="row">
     </div>
     <div class="row">
 
+    <%if(user){%>
+      <div class="col s3 center-align lists">
+        <h4>Profile</h4><hr>
+      </div>
 
+      <div class="col s3 center-align lists">
+        <h4>Current Questions</h4><hr>
+        <%if(questions){ %> 
+        <%for(var i=0;i<Object.keys(questions).length;i++){%>
+         <%if(questions[i].active){%>
+           <a href="poll/<%=questions[i].id%>"><h6><%=questions[i].question%> </h6></a>
+        <%}}}%>
+      </div>
 
-      <div class="col s3">
-      <h6>PROFILE</h6>
-        </div>
-      <div class="col s3">
-      Current Questions<br><br>
-      <%console.log(questions);%>
-      <%if(questions){ %> 
-      <%for(var i=0;i<Object.keys(questions).length;i++){%>
-      <%if(questions[i].active){%>
-      <a href="poll/<%=questions[i].id%>"><h6><%=questions[i].question%> </h6></a>
-      <%}}}%><br><br> 
+      <div class="col s3 center-align lists">
         <%if(friends){ %>
-      FRIENDS<br><br>
-    
-      <%friends.friend.forEach(function(friend){ %>
-      <h6><%=friend.name%></h6>
-      <% });%>
-    <div class="row">
-     <div class="input-field col s12">
-      <form action="/friends/add" method="post">
+          <h4>Friends</h4><hr>   
+        <%friends.friend.forEach(function(friend){ %>
+          <p><%=friend.name%></p>
+        <% });%>
+        </div>
+
+      <div class="input-field col s3">
+        <form action="/friends/add" method="post">
         <input id="friendEmail" type="email" name="friendEmail" class="validate" required="" aria-required="true">
-         <label for="friendEmail">Friend's Email</label>
+         <label for="friendEmail">Email</label>
         </input>
         <button>Add Friends</button>
       </form>
       </div>
      </div>
       <%}%>
-
-
-
-
       </div>
-    Closed Questions
+
+    <h4>Closed Questions</h4><hr>
     <%if(data){%>  
     <%var totalQuestions = 0;%>
     <%for(var r=0; r<data.data.questions.length; r++) { %>
     <%totalQuestions += (Object.keys(data.data.questions[r]).length);%>
     <%}%>
     <%}%>
-
-      <div class="col s5">
-        <table>
+    <div class ="table">
+      <div class="col s12">
+        <table id="myTable" class="myTable" >
           <thead>          
             <tr>
               <th data-field="category">Category</th>
@@ -72,12 +90,12 @@
             <td><%=data.data.questions[t][count]%></td>
           <td>
         <%for(var d=0; d < Object.keys(data.data.answers[count]).length; d++) { %>
-            <%=data.data.answers[count][d]%><br>
+            <%=data.data.answers[count][d]%>
          <%}%>
         </td>
          <td>
          <%for(var c=0; c < Object.keys(data.data.ranks[count]).length; c++) { %>
-            <%=data.data.ranks[count][c]%><br>
+            <%=data.data.ranks[count][c]%>
          <%}%>
          </td>
            <%}%>
@@ -89,12 +107,35 @@
         </table>
 
       </div>
-          
+      </div>
       </div>
 
     </div>
+<%} else { %>
+<div class="row"></div>
+<div class="row"></div>
+
+<div class="valign-wrapper">
+  <div class="row">
+  <div class="col s8 align-center offset-s3">
+  <h1 class="valign">Welcome to</h1>
+  </div>
+    <div class="col s8 align-center offset-s2">
+    <h2>Collaborative Intelligence</h2>
+    </div>
+      <div class="progress">
+      <div class="indeterminate"></div>
+  </div>
+</div>
+
+  </div>
+
+<%}%>
     <script >
 
+$(document).ready(function(){
+    $('#myTable').DataTable();
+});
 
 </script>
 

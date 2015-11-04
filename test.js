@@ -116,7 +116,7 @@ db.user.find({where: {
 	   });
 	   friendObj.friend = friends;
 	   console.log(friendObj);
-	   req.session.friend(friendObj);
+	   req.session.friend= friendObj;
 	   // callback.render("friends",{friends: friends});
 	   } else {
 			return false;
@@ -311,9 +311,10 @@ var count = 0;
 var friendObj = {};
 var friends = [];
 var currentQuestions = {};
-
+console.log(userName == "false");
 if(userName == "false"){
-	res.render("index", {data: null, friends: null, questions: null});
+	res.render("index", {data: null, friends: null, questions: null, user:false});
+	return;
 }
 
 db.user.find({where: {
@@ -387,10 +388,10 @@ db.user.find({where: {
 		polls.forEach(function(poll,i){
 		currentQuestions[i] = poll;
 		});
-			if(userName){
-	res.render("index", {data: data, friends: friendObj, questions: currentQuestions});
+	if(userName){
+	res.render("index", {data: data, friends: friendObj, questions: currentQuestions, user:true});
 	} else {
-	res.render("index", {data: data});
+	res.render("index", {data: data, user: false});
 	}
 	});
 

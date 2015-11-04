@@ -4,12 +4,55 @@
 	<title>Collaborative Intelligence</title>
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/materialize/css/materialize.min.css">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
+  <script src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/tablesorter/themes/blue/style.css">
+  <script type="text/javascript" src="/tablesorter/jquery.tablesorter.js"></script> 
+  <script src="/socket.io/socket.io.js"></script>
+	<meta name="viewport" content="width=device-width, height=device-height initial-scale=1.0"/>
+  <link href='https://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'>
+  <style>
+  body {
+    background: #2F302A;
+    color: white;
+font-family: 'PT Serif', serif;
+font-size: 100%; /* Makes the font go to 16 pixels */
+margin: 0;
+padding: 0;
 
+}
+#myTable_wrapper{
+  width: 98%;
+}
+.paginate_button{
+  color: #5DB !important;
+}
+.side-nav{
+  background-color: rgba(14, 13, 13, 0.9);
+}
+
+.side-nav a{
+  color: white;
+}
+
+button{
+  background: #00D110;
+  border: none;
+  height:32px;
+}
+
+h1 { font-size: 2em; }
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.17em; }
+h4 { font-size: 1.12em; }
+h5 { font-size: .83em; }
+h6 { font-size: .75em; }
+label{font-size: .75em;}
+
+  </style>
 </head>
-<script src="/socket.io/socket.io.js"></script>
 <script>
-
   var socket = io();
 </script>
 <body>
@@ -22,7 +65,7 @@
       <ul class="right hide-on-med-and-down">
       <%if (currentUser) { %>
         <li><a href="logout">Log out</a></li>
-        <li><a href="#">World</a></li>
+        <li><a href="/message">Messages<span class="new badge">4</span></a></li>
         <li><a href="/ask">Ask</a></li>
         <li><a href="#">Pro</a></li>
       <% } else { %>
@@ -34,7 +77,7 @@
       	<li><a href="/">Collaborative Intelligence</a></li>
       <%if (currentUser) { %>
         <li><a href="logout">Log out</a></li>
-        <li><a href="#">World</a></li>
+        <li><a href="/message">Messages<span class="new badge">4</span></a></li>
         <li><a href="/ask">Ask</a></li>
         <li><a href="#">Pro</a></li>
       <% } else { %>
@@ -46,12 +89,12 @@
   </nav>
  <% include alerts %>
  <%- body %>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
 <script src="/materialize/js/materialize.min.js"></script>
 <script>
 	$(document).ready(function(){
 	 $(".button-collapse").sideNav();
-	});
+	}); 
 </script>
 
 </body>
