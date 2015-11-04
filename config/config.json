@@ -14,6 +14,11 @@
     "dialect": "postgres"
   },
   "production": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "collab",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
     "use_env_variable": "DATABASE_URL"
   }
 }
