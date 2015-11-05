@@ -354,12 +354,12 @@ db.user.find({where: {
 	   };
 
 		db.category.findAll({
-			order: ["id",[db.question, 'id']],
+			order: "id",
 			include: [db.question],
 		}).then(function(questionItem){
 		db.question.findAll({
 			include: [db.answer],
-			order: [[db.answer, 'id'], 'id']
+			order: [[db.answer, 'categoryId']]
 		}).then(function(answerItem){
 
 			questionItem.forEach(function(qt, counter){
@@ -388,7 +388,7 @@ db.user.find({where: {
 		    	questionsCat = {};
 		    	cat++;
 		});
-			// console.log(data.data.answers);
+			res.send(data);
 			// console.log(friendObj, data);
 	if(req.session.user){
 		db.user.findById(req.session.user).then(function(user){
