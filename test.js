@@ -354,12 +354,12 @@ db.user.find({where: {
 	   };
 
 		db.category.findAll({
-			order: ["id",[db.question, "id"]],
-			include: [db.question],
+			// order: ["id",[db.question, "id"]],
+			include: [db.question]
 		}).then(function(categoryItem){
 		db.question.findAll({
-			include: [db.answer],
-			order: [[db.answer, "categoryId"]]
+			include: [db.answer]
+			// order: ["categoryid", [db.answer, "categoryId"]]
 		}).then(function(questionItem){
 
 			categoryItem.forEach(function(qt, counter){
