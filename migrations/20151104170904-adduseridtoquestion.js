@@ -8,7 +8,7 @@ module.exports = {
     query
       Example:
     */
-   return queryInterface.addColumn('question', 'userId', 
+   return queryInterface.addColumn('questions', 'userId', 
     { type: Sequelize.INTEGER,
        allowNull: false
      });
@@ -21,6 +21,6 @@ module.exports = {
 
       Example:
     */
-      return queryInterface.removeColumn('question', 'userId');
+      return queryInterface.removeColumn('questions', 'userId');
   }
 };
