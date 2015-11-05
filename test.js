@@ -428,7 +428,7 @@ console.log("RESULS", result);
 		data.data["ranks"].push(adding);
 		}
 	});
-	
+});
 	if(req.session.user){
 		db.user.findById(req.session.user).then(function(user){
 			if(user){
@@ -458,7 +458,6 @@ res.send(data);
 	} else {
 	// res.render("index", {data: data, user: false});
 	}
-	});
 	});
 	});
 	});
