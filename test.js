@@ -330,6 +330,8 @@ var friendObj = {};
 var friends = [];
 var currentQuestions = {};
 var messages = [];
+var q = [];
+var a = [];
 // console.log(userName == "false");
 
 if(userName == "false"){
@@ -375,25 +377,26 @@ console.log(categoryItem, "DSGDASG");
 				// 	questionsCat[i] = qi.dataValues.question;
 				// });
  			// 	data.data["questions"].push(questionsCat);
-				
+			});
 
 				questionItem.forEach(function(qi, i){
 				console.log("\nQuestion:",qi.dataValues.question,i);
-				questionsCat[counter] = qi.dataValues.question;
-			 	data.data["questions"].push(questionsCat);
+					q.push(qi.dataValues.question);
+				});
+				questionsCat[0] = q;
+				data.data["questions"].push(questionsCat);
 
-
-				answerList = {};
 				qi.dataValues.answers.forEach(function(ai, t){
 					console.log(ai.dataValues.answer, i, t);
-				answerList[t]  = ai.dataValues.answer;	
-				rankList[t]    = ai.dataValues.rank;
+				a.push(ai.dataValues.answer);	
+				// rankList[t]    = ai.dataValues.rank;
 				});
+				answerList[0] = a;
 				data.data["answers"].push(answerList);
-				data.data["ranks"].push(rankList);
-			});
+				// data.data["ranks"].push(rankList);
 		
-			});
+		
+
 				
 
 		
