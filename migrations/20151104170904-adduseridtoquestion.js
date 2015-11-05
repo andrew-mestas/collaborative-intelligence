@@ -9,8 +9,7 @@ module.exports = {
       Example:
     */
    return queryInterface.addColumn('questions', 'userId', 
-    { type: Sequelize.INTEGER,
-       allowNull: false
+    { type: Sequelize.INTEGER
      });
   },
 
