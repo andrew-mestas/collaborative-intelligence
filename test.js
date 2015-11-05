@@ -17,18 +17,18 @@ function CollabInt(){
 // var len = data.length;
 // var num = 1;
 
-// var categoryText = "Every day";
-// var questions = "Boots, sandals, or barefeet?";
-// var answer1   = "Boots";
-// var answerRank1 = 55;
-// var answer2 = "sandals";
-// var answerRank2 = 25;
-// var answer3 = "barefeet";
-// var answerRank3 = 20;
+var categoryText = "Every day";
+var questions = "Boots, sandals, or barefeet?";
+var answer1   = "Boots";
+var answerRank1 = 55;
+var answer2 = "sandals";
+var answerRank2 = 25;
+var answer3 = "barefeet";
+var answerRank3 = 20;
 
-// var data = [[categoryText, questions],[answer1, answerRank1],[answer2, answerRank2],[answer3, answerRank3]];
-// var len = data.length;
-// var num = 1;
+var data = [[categoryText, questions],[answer1, answerRank1],[answer2, answerRank2],[answer3, answerRank3]];
+var len = data.length;
+var num = 1;
 
 // var categoryText = "Every day";
 // var questions = "Should I go to work today";
@@ -154,7 +154,7 @@ db.user.findOrCreate({where: {
 	console.log(newUser.get());
 	createdUser = created;
  });
-	if(createUser){
+	if(createdUser){
 	 return true;
 	} else {
 	 return false;
@@ -176,7 +176,7 @@ db.user.find({where:{
  }}).then(function(newFriend){
  	if(newFriend){
 	person.addFriend(newFriend);
-	newFriend.addFriend(person); // COMMENT OUT FOR MORE PRIVACY ADD SEND REQUEST FOR FRIEND
+	// newFriend.addFriend(person); // COMMENT OUT FOR MORE PRIVACY ADD SEND REQUEST FOR FRIEND
 	} else {
 		return false;
 	}
@@ -194,7 +194,7 @@ db.user.find({where:{
 
 
 
-CollabInt.prototype.storeData = function(data){
+CollabInt.prototype.storeData = function(data, userId){
 var len = data.length;
 var num = 1;
 
@@ -203,16 +203,23 @@ db.category.findOrCreate({where: {
 	name : data[0][0]
 }}).spread(function(categoryItem, created){
 db.question.findOrCreate({where: {
-	question : data[0][1]
+	question : data[0][1],
+	userId:userId
 }}).spread(function(newQuestion, created){
 	categoryItem.addQuestion(newQuestion).then(function(){
 db.answer.findOrCreate({where: {
 	answer : data[num][0],
 	rank: data[num][1]
 }}).spread(function(answerItem){
-	categoryItem.addAnswer(answerItem).then(function(){
-	  newQuestion.addAnswer(answerItem).then(function(){
-	  console.log("Done");
+db.user.find({where:{
+	id: userId
+}}).then(function(userItem){
+	// console.log(userItem);
+	// console.log(newQuestion);
+	 categoryItem.addAnswer(answerItem).then(function(){
+	 newQuestion.addAnswer(answerItem).then(function(){
+	 console.log("Done");
+	  });
 	 });
 	});
    });
@@ -282,7 +289,7 @@ db.question.findAll({
     	questionsCat = {};
     	cat++;
 });
-	console.log(data.data.answers);
+	// console.log(data.data.answers);
 	// .log(Object.keys(data.data.questions[1]).length);
 	if(req.session.user){
 		db.user.findById(req.session.user).then(function(user){
@@ -307,6 +314,7 @@ db.question.findAll({
 });
 };
 
+
 CollabInt.prototype.allData = function(req, res, userName){
 
 var data = {"categories": [], data: {"questions": [], "answers" : [], "ranks": []}};
@@ -321,9 +329,11 @@ var count = 0;
 var friendObj = {};
 var friends = [];
 var currentQuestions = {};
-console.log(userName == "false");
+var messages = [];
+// console.log(userName == "false");
+
 if(userName == "false"){
-	res.render("index", {data: null, friends: null, questions: null, user:false});
+	res.render("index", {data: null, friends: null, questions: null, user:false, messages: false});
 	return;
 }
 
@@ -347,7 +357,6 @@ db.user.find({where: {
 			order: "id",
 			include: [db.question],
 		}).then(function(questionItem){
-			console.log()
 		db.question.findAll({
 			include: [db.answer],
 			order: [[db.answer, 'categoryId']]
@@ -398,13 +407,20 @@ db.user.find({where: {
 		polls.forEach(function(poll,i){
 		currentQuestions[i] = poll;
 		});
+	db.message.findAll({where:{
+			to: user.id
+		}}).then(function(message){
+		message.forEach(function(message){
+		messages.push(message.dataValues.title, message.dataValues.content);
+		});
+
 	if(userName){
-	res.render("index", {data: data, friends: friendObj, questions: currentQuestions, user:true});
+	res.render("index", {data: data, friends: friendObj, questions: currentQuestions, user:true, messages: messages});
 	} else {
 	res.render("index", {data: data, user: false});
 	}
 	});
-
+	});
 	});
 		});
 	 });
@@ -427,7 +443,6 @@ var addChoices = function(choices, callback){
 
 
 CollabInt.prototype.addPoll = function(category, question, choices, active, res, user){
-
 db.poll.findOrCreate({where:{
 	category: category,
 	question: question,
@@ -436,8 +451,8 @@ db.poll.findOrCreate({where:{
 }}).spread(function(poll, created){
 
 async.concat(choices, addChoices, function(err, results) {
-  console.log(poll.get());
-  console.log(results);
+  // console.log(poll.get());
+  // console.log(results);
   for(var i=0;i<results.length;i++){
     poll.addChoice(results[i]);
   }
@@ -456,7 +471,7 @@ CollabInt.prototype.getPoll= function(pollId, res, user){
 		},  order: "id ASC" }).then(function(choice, created){
 			data.push(poll);
 			choice.forEach(function(g){
-			console.log(g.choiceString, g.value);
+			// console.log(g.choiceString, g.value);
 			inner.push(g.choiceString, g.value);
 			});
 			question.push(poll.question,poll.category);
@@ -483,7 +498,7 @@ CollabInt.prototype.closePoll = function(pollId, callback){
 			inner.push(choice.choiceString, choice.value);
 			data.push(inner);
 		});
-		callback.storeData(data);
+		callback.storeData(data, poll.userId);
 	});
 	} else {
 		return;
@@ -502,11 +517,11 @@ CollabInt.prototype.updatePoll = function(data){
 		pollId: pollId,
 		choiceString: choice
 	}}).then(function(choice){
-		console.log(choice.value);
+		// console.log(choice.value);
 		choice.value++;
 		choice.save();		
 
-		console.log(choice.value);
+		// console.log(choice.value);
 		// choice.dataValues.value +=1;
 	});
 }
@@ -515,25 +530,77 @@ CollabInt.prototype.addAdmin = function(admin, user){
 	db.user.find({where:{
 		name: user
 	}}).then(function(user){
-		user.admin = "true";
+		user.admin = true;
 		user.save;
 		console.log(admin,"created new admin:",user.name,"at",user.createdAt);
 	});
 }
 
+CollabInt.prototype.removeAdmin = function(admin, user){
+	db.user.find({where:{
+		name: user
+	}}).then(function(user){
+		if(user){
+		user.admin = false;
+		user.save;
+		console.log(admin,"removed:",user.name,"as an administrator at",user.createdAt);
+		} else{
+		console.log("User not found");
+		}
+	});
+}
+
+CollabInt.prototype.createMessage = function(from, to, title, body){
+	db.user.find({where:{
+		email: to
+	}}).then(function(receiver){
+	db.message.findOrCreate({where:{
+	from: from,
+	to: receiver.id,
+	title: title,
+	content: body,
+	userId: from,
+	answered: false
+}}).then(function(messageItem){
+});
+
+	});
+
+}
+
+CollabInt.prototype.getMessage = function(user, res){
+	var messages = [];
+	var info = [];
+	db.message.findAll({where:{
+		to: user
+	}}).then(function(message){
+		message.forEach(function(message){
+			info.push(message.to, message.from);
+		messages.push(message.dataValues.title, message.dataValues.content);
+		});
+	console.log(info);
+
+		res.render("message", {name: res.locals.name, messages: messages});
+
+		
+	});
+
+}
+
+
+
+
 // CollabInt.prototype.
 
 // // test(category, question, true);
 var c = new CollabInt();
-// c.addAdmin("Andrew","Sally Jo");
+// c.removeAdmin("Andrew","Sally Bob");
+// c.addUser("Billy Bob", "password@gmail.com", "password");
+// c.createMessage(2,"gopro@gmail.com","re:hey","Nothing much, you?");
+// c.getMessage(2);
+// 
 
-db.user.find({where:{
-	name: "Billy Bob"
-	}}).then(function(user){
-		console.log(user.admin);
-	console.log(user.get());
-	});
-// // c.storeData(data);
+// c.storeData(data,1);
 // c.addPoll(category, question, choices, true);
 // c.closePoll(2, c);
 // setTimeout(function(){console.log(friendObjG.friend[0].name);}, 3000);

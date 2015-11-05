@@ -1,14 +1,71 @@
-<h1><%=name%> Messages</h1>
+<style>
+  .collapsible{
+    color: black;
+    background: #18FF64;
+  }
+  input{
+    color: black;
+  }
+</style>
 
 <div class="container">
+<h1><%=name%> Messages <%=Math.floor(messages.length/2)%></h1>
+
   <div class="row">
-  <div class="col s8">
-  	<ul>
-  	<li>Test</li>
-  	<li>Test</li>
-  	<li>Test</li>
-  	<li>Test</li>
-  	</ul>
+  <div class="col s10">
+  	
+<ul class="collapsible" data-collapsible="accordion">
+<%for(var i =0; i< messages.length; i+=2){ %>
+    <li>
+      <div class="collapsible-header"><i class="material-icons">message</i><%=messages[i]%><a class="waves-effect waves-light btn right reply" data-me="<%=i%>"><i class="material-icons center" data-me="<%=i%>">done</i></a></div>
+      <div class="collapsible-body"><p><%=messages[i+1]%></p>
+      </div>
+
+    </li>
+    <%}%>
+</ul>      
   </div>
   </div>
+
+  <!-- Modal Trigger -->
+  <a class="waves-effect waves-light btn modal-trigger" href="#modal1"><i class="material-icons right">input</i>Send Message</a>
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+    <div class = "row">
+     <div class = "col s4 input-field">
+     <input type="text" class="validate" name="title" required="" aria-required="true" id="title"></input>
+     <label for="title">Title</label>
+     </div>
+     <div class = "col s4 input-field right">
+     <input type="text" class="validate" name="to" required="" aria-required="true" id="to"></input>
+     <label for="to">To</label>
+     </div>
+     <div class="row"></div>
+     <div class = "col s12 input-field">
+     <input type="text" class="validate" name="body" required="" aria-required="true" id="body"></input>
+     <label for="body">Body</label>
+     </div>
+     </div>
+      <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Send</a>
+    </div>
+  </div>
+          
+
 </div>
+
+<script>
+$(document).ready(function(){
+
+  $(".reply").click(function(){
+    console.log($(this).data("me"));
+  });
+$('.modal-trigger').leanModal();
+  $(".send").click(function(){
+    console.log($(this));
+  })
+});
+</script>

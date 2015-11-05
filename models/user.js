@@ -5,7 +5,6 @@ module.exports = function(sequelize, DataTypes) {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     prolevel: DataTypes.INTEGER,
-    questionId: DataTypes.INTEGER,
     admin: DataTypes.BOOLEAN
   }, {
     classMethods: {
@@ -14,6 +13,7 @@ module.exports = function(sequelize, DataTypes) {
         models.user.belongsToMany(models.user, {as : "friend", through : "usersFriends"});
         models.user.hasMany(models.question);
         models.user.hasMany(models.poll);
+        models.user.hasMany(models.message);
       },
       authenticate: function(email, password, callback){
         this.find({where:{ email : email}}).then(function(user){

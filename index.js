@@ -58,9 +58,13 @@ io.on('connection', function(socket){
   console.log('a user connected');
 
   socket.on('message', function(msg){
-  	console.log(msg);
   	CollabInt.updatePoll(msg);
   	socket.broadcast.emit("This is broadcast", msg);
+  });
+
+  socket.on('closed', function(msg){
+  	CollabInt.updatePoll(msg);
+  	socket.broadcast.emit("closed", msg);
   });
 
 

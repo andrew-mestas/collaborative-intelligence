@@ -13,8 +13,8 @@
 	<div class="center col s10 offset-s1 green">
 	</div>
 	<div class="center col s10 offset-s1">
-   <h4><%=question[1]%></h4>
-	 <h4><%=question[0]%></h4>
+   <h4 id="ow1"><%=question[1]%></h4>
+	 <h4 id="ow2"><%=question[0]%></h4>
 	</div>
 	<div class="row"></div>
 	<div class="center col s10 offset-s1">
@@ -116,8 +116,13 @@ if(toggle){
 	});
 
 $(".closePoll").click(function(){
-
+  socket.emit('closed', "This poll is now closed");
 	window.open("/closePoll/" + $(this)[0].id.toString(),"_self");
+});
+
+socket.on('closed', function(msg){
+  $("ow1").text("This poll is closed");
+  $("ow2").text("");
 });
 
  socket.on('This is broadcast', function(msg){

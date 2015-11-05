@@ -20,7 +20,8 @@
 </style>
     
     <!-- Page Layout here -->
-    <div class="row">
+    <div class="row" hidden id="messages">
+    <%=Math.floor(messages.length/2)%>
     </div>
     <div class="row">
 
@@ -135,6 +136,11 @@
 
 $(document).ready(function(){
     $('#myTable').DataTable();
+    var data = document.getElementsByClassName("table");
+    if(data.length > 0){
+    $(".badge")[0].innerHTML = $("#messages").text();
+    $(".badge")[1].innerHTML = $("#messages").text();
+    }
 });
 
 </script>
