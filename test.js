@@ -324,14 +324,12 @@ var cat = 0,
 	ans = 0;
 var answerList = {};
 var rankList = {};
-var questionsCat = {};
+var questionsCat = { };
 var count = 0;
 var friendObj = {};
 var friends = [];
 var currentQuestions = {};
 var messages = [];
-var q = [];
-var a = [];
 // console.log(userName == "false");
 
 if(userName == "false"){
@@ -357,75 +355,40 @@ db.user.find({where: {
 
 		db.category.findAll({
 			order: ["id",[db.question, "id"]],
-			include: [db.question,db.answer]
-		}).then(function(categoryItem){
-
-		db.question.findAll({
-			order: "id",
-			include: [db.answer]
+			include: [db.question],
 		}).then(function(questionItem){
+		db.question.findAll({
+			include: [db.answer],
+			order: [[db.answer, 'id']]
+		}).then(function(answerItem){
 
-console.log(questionItem,"DSAFDSDFFDSSD");
-console.log(categoryItem, "DSGDASG");
-			categoryItem.forEach(function(ci, counter){
-		
-				console.log("\nCategory:",ci.name);
-				data["categories"].push(ci.name);
-
-				// ci.dataValues.questions.forEach(function(qi, i){
-				// 	console.log("\nQuestion:",qi.dataValues.question,counter,i);
-				// 	questionsCat[i] = qi.dataValues.question;
-				// });
- 			// 	data.data["questions"].push(questionsCat);
-			});
-
-				questionItem.forEach(function(qi, i){
-				console.log("\nQuestion:",qi.dataValues.question,i);
-					q.push(qi.dataValues.question);
-				});
-				questionsCat[0] = q;
-				data.data["questions"].push(questionsCat);
-
-				qi.dataValues.answers.forEach(function(ai, t){
-					console.log(ai.dataValues.answer, i, t);
-				a.push(ai.dataValues.answer);	
-				// rankList[t]    = ai.dataValues.rank;
-				});
-				answerList[0] = a;
+			questionItem.forEach(function(qt, counter){
+				count= counter;
+				// console.log("\nCategory:",qt.dataValues.name);
+				data["categories"].push(qt.dataValues.name);
+			questionItem[cat].dataValues.questions.forEach(function(q, i){
+				questionsCat[que] = q.dataValues.question;
+				// console.log(q.dataValues.question, que)
+			answerItem[que].dataValues.answers.forEach(function(an, y){
+				// console.log("Answer:",an.dataValues.answer,"\n");
+				// console.log("Rank:",an.dataValues.rank,"\n");
+				var answerToPut = an.dataValues.answer;
+				var rankToPut = an.dataValues.rank;
+				answerList[y]  =  answerToPut;
+				rankList[y] = rankToPut;
+		  	  });
 				data.data["answers"].push(answerList);
-				// data.data["ranks"].push(rankList);
-		
-		
-
-				
-
-		
-
-
-			// categoryItem[cat].dataValues.questions.forEach(function(q, i){
-			// 	questionsCat[que] = q.dataValues.question;
-			// 	console.log(q.dataValues.question, que)
-			// categoryItem[que].dataValues.answers.forEach(function(an, y){
-			// 	console.log("Answer:",an.dataValues.answer,"\n");
-			// 	// console.log("Rank:",an.dataValues.rank,"\n");
-			// 	var answerToPut = an.dataValues.answer;
-			// 	var rankToPut = an.dataValues.rank;
-			// 	answerList[y]  =  answerToPut;
-			// 	rankList[y] = rankToPut;
-		 //  	  });
-			// 	data.data["answers"].push(answerList);
-			// 	data.data["ranks"].push(rankList);
-			// 	answerList = {};
-			// 	rankList = {};
-			// 	ans++;
-		 //   		que++;
-		 //    });
-		 //    	data.data["questions"].push(questionsCat);
-		 //    	questionsCat = {};
-		 //    	cat++;
-			res.send(data);
+				data.data["ranks"].push(rankList);
+				answerList = {};
+				rankList = {};
+				ans++;
+		   		que++;
+		    });
+		    	data.data["questions"].push(questionsCat);
+		    	questionsCat = {};
+		    	cat++;
 		});
-});
+			console.log(data);
 			// console.log(friendObj, data);
 	if(req.session.user){
 		db.user.findById(req.session.user).then(function(user){
@@ -452,15 +415,15 @@ console.log(categoryItem, "DSGDASG");
 		});
 
 	if(userName){
-	// res.render("index", {data: data, friends: friendObj, questions: currentQuestions, user:true, messages: messages});
+	res.render("index", {data: data, friends: friendObj, questions: currentQuestions, user:true, messages: messages});
 	} else {
-	// res.render("index", {data: data, user: false});
+	res.render("index", {data: data, user: false});
 	}
 	});
 	});
 	});
-// });
-	 // });
+		});
+	 });
     } else {
     	return false;
     }
