@@ -358,9 +358,9 @@ db.user.find({where: {
 			include: [db.question],
 		}).then(function(questionItem){
 		db.question.findAll({
-			include: [db.answer],
-			order: [[db.answer, 'categoryId']]
-		}).then(function(answerItem){
+			include: [db.answer]
+
+			}).then(function(answerItem){
 
 			questionItem.forEach(function(qt, counter){
 				count= counter;
