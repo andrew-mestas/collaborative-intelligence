@@ -376,9 +376,11 @@ console.log(categoryItem, "DSGDASG");
 				// });
  			// 	data.data["questions"].push(questionsCat);
 				});
-			questionItem.forEach(function(qi, i){
+
+				questionItem.forEach(function(qi, i){
 				console.log("\nQuestion:",qi.dataValues.question,i);
 				questionsCat[i] = qi.dataValues.question;
+			 	data.data["questions"].push(questionsCat);
 
 
 				answerList = {};
@@ -389,7 +391,6 @@ console.log(categoryItem, "DSGDASG");
 				});
 				data.data["answers"].push(answerList);
 				data.data["ranks"].push(rankList);
-			 				data.data["questions"].push(questionsCat);
 
 		
 			});
