@@ -315,16 +315,49 @@ db.question.findAll({
 };
 
 
+var getAnswers = function(id, callback){
+var answerList = {};
+var rankList = {};
+
+			db.answer.findAll({where:{
+			questionId : id
+		}}).then(function(answe){
+			answe.forEach(function(a,y){
+				console.log("Answer", a.dataValues.answer);
+			var answerToPut = a.dataValues.answer;
+			var rankToPut = a.dataValues.rank;
+			answerList[y]  =  answerToPut;
+			rankList[y] = rankToPut;
+			});
+			callback(null,[answerList, rankList]);
+		});
+			// answerItem[que].dataValues.answers.forEach(function(an, y){
+			// 	// console.log("Answer:",an.dataValues.answer,"\n");
+			// 	// console.log("Rank:",an.dataValues.rank,"\n");
+			// 	var answerToPut = an.dataValues.answer;
+			// 	var rankToPut = an.dataValues.rank;
+			// 	answerList[y]  =  answerToPut;
+			// 	rankList[y] = rankToPut;
+		 //  	  });
+				// data.data["answers"].push(answerList);
+				// data.data["ranks"].push(rankList);
+				// answerList = {};
+				// rankList = {};
+}
+
+
+
 CollabInt.prototype.allData = function(req, res, userName){
 
 var data = {"categories": [], data: {"questions": [], "answers" : [], "ranks": []}};
-
+var questionsTo = [];
 var cat = 0,
 	que = 0,
 	ans = 0;
 var answerList = {};
 var rankList = {};
 var questionsCat = { };
+var questionsCat2 = {}; 
 var count = 0;
 var friendObj = {};
 var friends = [];
@@ -368,28 +401,34 @@ db.user.find({where: {
 				data["categories"].push(qt.dataValues.name);
 			questionItem[cat].dataValues.questions.forEach(function(q, i){
 				questionsCat[que] = q.dataValues.question;
-				// console.log(q.dataValues.question, que)
-			answerItem[que].dataValues.answers.forEach(function(an, y){
-				// console.log("Answer:",an.dataValues.answer,"\n");
-				// console.log("Rank:",an.dataValues.rank,"\n");
-				var answerToPut = an.dataValues.answer;
-				var rankToPut = an.dataValues.rank;
-				answerList[y]  =  answerToPut;
-				rankList[y] = rankToPut;
-		  	  });
-				data.data["answers"].push(answerList);
-				data.data["ranks"].push(rankList);
-				answerList = {};
-				rankList = {};
+				questionsCat2[que] = q.dataValues.id;				
+				// console.log(q.dataValues.question, que
+		    });
 				ans++;
 		   		que++;
-		    });
 		    	data.data["questions"].push(questionsCat);
+		    	questionsTo.push(questionsCat2);
 		    	questionsCat = {};
 		    	cat++;
 		});
 			console.log(data);
-			// console.log(friendObj, data);
+var questionsArr = [];
+	questionsTo.forEach(function(ques, y){
+		console.log(ques);
+		questionsArr.push(ques[y]);
+		console.log(questionsArr);
+	});
+	async.concat(questionsArr, getAnswers, function(err, result){		
+
+	result.forEach(function(adding, i){
+
+		if(i%2==0){
+		data.data["answers"].push(adding);
+		} else {
+		data.data["ranks"].push(adding);
+		}
+	});
+	
 	if(req.session.user){
 		db.user.findById(req.session.user).then(function(user){
 			if(user){
@@ -422,6 +461,8 @@ db.user.find({where: {
 	});
 	});
 	});
+	});
+
 		});
 	 });
     } else {
@@ -599,6 +640,13 @@ var c = new CollabInt();
 // c.createMessage(2,"gopro@gmail.com","re:hey","Nothing much, you?");
 // c.getMessage(2);
 // 
+// db.question.findAll({include: [db.answer]}).then(function(to){
+// 	db.answer.findAll({where: 
+// 		{ questionId : to[0].dataValues.id
+// 		}}).then(function(g){
+// 			console.log(g);
+// 		});
+// });
 
 // c.storeData(data,1);
 // c.addPoll(category, question, choices, true);
