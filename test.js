@@ -356,21 +356,20 @@ db.user.find({where: {
 		db.category.findAll({
 			order: "id",
 			include: [db.question],
-		}).then(function(questionItem){
+		}).then(function(categoryItem){
 		db.question.findAll({
-			order: 'categoryId',
 			include: [db.answer]
-		}).then(function(answerItem){
+		}).then(function(questionItem){
 
-			questionItem.forEach(function(qt, counter){
+			categoryItem.forEach(function(qt, counter){
 				count= counter;
-				// console.log("\nCategory:",qt.dataValues.name);
+				console.log("\nCategory:",qt.dataValues.name);
 				data["categories"].push(qt.dataValues.name);
-			questionItem[cat].dataValues.questions.forEach(function(q, i){
+			categoryItem[cat].dataValues.questions.forEach(function(q, i){
 				questionsCat[que] = q.dataValues.question;
-				// console.log(q.dataValues.question, que)
-			answerItem[que].dataValues.answers.forEach(function(an, y){
-				// console.log("Answer:",an.dataValues.answer,"\n");
+				console.log(q.dataValues.question, que)
+			questionItem[que].dataValues.answers.forEach(function(an, y){
+				console.log("Answer:",an.dataValues.answer,"\n");
 				// console.log("Rank:",an.dataValues.rank,"\n");
 				var answerToPut = an.dataValues.answer;
 				var rankToPut = an.dataValues.rank;
