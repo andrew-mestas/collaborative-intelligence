@@ -414,12 +414,12 @@ db.user.find({where: {
 			console.log(data);
 var questionsArr = [];
 	questionsTo.forEach(function(ques, y){
-		console.log(ques);
+		console.log("GOT THESE"ques);
 		questionsArr.push(ques[y]);
-		console.log(questionsArr);
+		console.log("TURNED INTO"questionsArr);
 	});
 	async.concat(questionsArr, getAnswers, function(err, result){		
-
+console.log("RESULS", result);
 	result.forEach(function(adding, i){
 
 		if(i%2==0){
@@ -452,11 +452,11 @@ var questionsArr = [];
 		message.forEach(function(message){
 		messages.push(message.dataValues.title, message.dataValues.content);
 		});
-
+res.send(data);
 	if(userName){
 	res.render("index", {data: data, friends: friendObj, questions: currentQuestions, user:true, messages: messages});
 	} else {
-	res.render("index", {data: data, user: false});
+	// res.render("index", {data: data, user: false});
 	}
 	});
 	});
