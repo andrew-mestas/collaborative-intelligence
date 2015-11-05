@@ -370,7 +370,7 @@ db.user.find({where: {
 			categoryItem[cat].dataValues.questions.forEach(function(q, i){
 				questionsCat[que] = q.dataValues.question;
 				console.log(q.dataValues.question, que)
-			questionItem[que].dataValues.answers.forEach(function(an, y){
+			categoryItem[que].dataValues.answers.forEach(function(an, y){
 				console.log("Answer:",an.dataValues.answer,"\n");
 				// console.log("Rank:",an.dataValues.rank,"\n");
 				var answerToPut = an.dataValues.answer;
