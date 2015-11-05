@@ -357,7 +357,7 @@ db.user.find({where: {
 			order: ["id",[db.question, "id"]],
 			include: [db.question,db.answer]
 		}).then(function(categoryItem){
-			res.send(categoryItem);
+
 		db.question.findAll({
 			// include: [db.answer]
 			// order: ["categoryid", [db.answer, "categoryId"]]
