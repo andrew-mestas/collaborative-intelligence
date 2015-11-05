@@ -324,7 +324,7 @@ var cat = 0,
 	ans = 0;
 var answerList = {};
 var rankList = {};
-var questionsCat = { };
+var questionsCat = {};
 var count = 0;
 var friendObj = {};
 var friends = [];
@@ -359,37 +359,69 @@ db.user.find({where: {
 		}).then(function(categoryItem){
 
 		db.question.findAll({
-			// include: [db.answer]
-			// order: ["categoryid", [db.answer, "categoryId"]]
+			order: "id",
+			include: [db.answer]
 		}).then(function(questionItem){
 
-			categoryItem.forEach(function(qt, counter){
-				count= counter;
-				console.log("\nCategory:",qt.dataValues.name);
-				data["categories"].push(qt.dataValues.name);
-			categoryItem[cat].dataValues.questions.forEach(function(q, i){
-				questionsCat[que] = q.dataValues.question;
-				console.log(q.dataValues.question, que)
-			categoryItem[que].dataValues.answers.forEach(function(an, y){
-				console.log("Answer:",an.dataValues.answer,"\n");
-				// console.log("Rank:",an.dataValues.rank,"\n");
-				var answerToPut = an.dataValues.answer;
-				var rankToPut = an.dataValues.rank;
-				answerList[y]  =  answerToPut;
-				rankList[y] = rankToPut;
-		  	  });
+console.log(questionItem,"DSAFDSDFFDSSD");
+console.log(categoryItem, "DSGDASG");
+			categoryItem.forEach(function(ci, counter){
+		
+				console.log("\nCategory:",ci.name);
+				data["categories"].push(ci.name);
+
+				// ci.dataValues.questions.forEach(function(qi, i){
+				// 	console.log("\nQuestion:",qi.dataValues.question,counter,i);
+				// 	questionsCat[i] = qi.dataValues.question;
+				// });
+ 			// 	data.data["questions"].push(questionsCat);
+			
+			questionItem.forEach(function(qi, i){
+				console.log("\nQuestion:",qi.dataValues.question,counter,i);
+				questionsCat[i] = qi.dataValues.question;
+
+
+				answerList = {};
+				qi.dataValues.answers.forEach(function(ai, t){
+					console.log(ai.dataValues.answer, i, t);
+				answerList[t]  = ai.dataValues.answer;	
+				rankList[t]    = ai.dataValues.rank;
+				});
 				data.data["answers"].push(answerList);
 				data.data["ranks"].push(rankList);
-				answerList = {};
-				rankList = {};
-				ans++;
-		   		que++;
-		    });
-		    	data.data["questions"].push(questionsCat);
-		    	questionsCat = {};
-		    	cat++;
-		});
+			});
+			 				data.data["questions"].push(questionsCat);
+
+			});
+				
+
+		
+
+
+			// categoryItem[cat].dataValues.questions.forEach(function(q, i){
+			// 	questionsCat[que] = q.dataValues.question;
+			// 	console.log(q.dataValues.question, que)
+			// categoryItem[que].dataValues.answers.forEach(function(an, y){
+			// 	console.log("Answer:",an.dataValues.answer,"\n");
+			// 	// console.log("Rank:",an.dataValues.rank,"\n");
+			// 	var answerToPut = an.dataValues.answer;
+			// 	var rankToPut = an.dataValues.rank;
+			// 	answerList[y]  =  answerToPut;
+			// 	rankList[y] = rankToPut;
+		 //  	  });
+			// 	data.data["answers"].push(answerList);
+			// 	data.data["ranks"].push(rankList);
+			// 	answerList = {};
+			// 	rankList = {};
+			// 	ans++;
+		 //   		que++;
+		 //    });
+		 //    	data.data["questions"].push(questionsCat);
+		 //    	questionsCat = {};
+		 //    	cat++;
 			res.send(data);
+		});
+});
 			// console.log(friendObj, data);
 	if(req.session.user){
 		db.user.findById(req.session.user).then(function(user){
@@ -416,15 +448,15 @@ db.user.find({where: {
 		});
 
 	if(userName){
-	res.render("index", {data: data, friends: friendObj, questions: currentQuestions, user:true, messages: messages});
+	// res.render("index", {data: data, friends: friendObj, questions: currentQuestions, user:true, messages: messages});
 	} else {
-	res.render("index", {data: data, user: false});
+	// res.render("index", {data: data, user: false});
 	}
 	});
 	});
 	});
-		});
-	 });
+// });
+	 // });
     } else {
     	return false;
     }
