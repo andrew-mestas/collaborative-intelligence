@@ -375,7 +375,7 @@ console.log(categoryItem, "DSGDASG");
 				// 	questionsCat[i] = qi.dataValues.question;
 				// });
  			// 	data.data["questions"].push(questionsCat);
-			
+				});
 			questionItem.forEach(function(qi, i){
 				console.log("\nQuestion:",qi.dataValues.question,counter,i);
 				questionsCat[i] = qi.dataValues.question;
@@ -389,9 +389,9 @@ console.log(categoryItem, "DSGDASG");
 				});
 				data.data["answers"].push(answerList);
 				data.data["ranks"].push(rankList);
-			});
 			 				data.data["questions"].push(questionsCat);
 
+		
 			});
 				
 
