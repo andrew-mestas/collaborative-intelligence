@@ -414,9 +414,9 @@ db.user.find({where: {
 			console.log(data);
 var questionsArr = [];
 	questionsTo.forEach(function(ques, y){
-		console.log("GOT THESE"ques);
+		console.log("GOT THESE",ques);
 		questionsArr.push(ques[y]);
-		console.log("TURNED INTO"questionsArr);
+		console.log("TURNED INTO",questionsArr);
 	});
 	async.concat(questionsArr, getAnswers, function(err, result){		
 console.log("RESULS", result);
@@ -454,7 +454,7 @@ console.log("RESULS", result);
 		});
 res.send(data);
 	if(userName){
-	res.render("index", {data: data, friends: friendObj, questions: currentQuestions, user:true, messages: messages});
+	// res.render("index", {data: data, friends: friendObj, questions: currentQuestions, user:true, messages: messages});
 	} else {
 	// res.render("index", {data: data, user: false});
 	}
