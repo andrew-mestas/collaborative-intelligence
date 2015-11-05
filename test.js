@@ -411,24 +411,14 @@ db.user.find({where: {
 		    	questionsCat = {};
 		    	cat++;
 		});
-			console.log(data);
-var questionsArr = [];
-	questionsTo.forEach(function(ques, y){
-		console.log("GOT THESE",ques);
-		questionsArr.push(ques[y]);
-		console.log("TURNED INTO",questionsArr);
-	});
-	async.concat(questionsArr, getAnswers, function(err, result){		
-console.log("RESULS", result);
-	result.forEach(function(adding, i){
 
-		if(i%2==0){
-		data.data["answers"].push(adding);
-		} else {
-		data.data["ranks"].push(adding);
-		}
+	var questionsArr = [];
+			console.log("GOT THESE",questionsTo);
+	questionsTo.forEach(function(ques, y){
+		questionsArr.push(ques[y]);
 	});
-});
+		console.log("TURNED INTO",questionsArr);
+
 	if(req.session.user){
 		db.user.findById(req.session.user).then(function(user){
 			if(user){
