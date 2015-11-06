@@ -167,6 +167,7 @@ db.user.findOrCreate({where: {
 //////////////////////////////////////////////////////////////////
 
 CollabInt.prototype.addFriend = function(userName, friendEmail){
+	console.log(userName, friendEmail);
 db.user.find({where:{
 	name: userName
 }}).then(function(person){
@@ -659,13 +660,24 @@ CollabInt.prototype.getMessage = function(user, res){
 
 }
 
-
+CollabInt.prototype.getUsers = function(res, req){
+	var userNames = [];
+	var userEmail = [];
+	db.user.findAll().then(function(users){
+		users.forEach(function(us){
+			userNames.push(us.name);
+			userEmail.push(us.email);
+		});
+		console.log(req.session);
+		res.render("users", {users: userNames, email :userEmail, currentUser: req.session.userName});
+	});
+}
 
 
 // CollabInt.prototype.
 
 // // test(category, question, true);
-var c = new CollabInt();
+// var c = new CollabInt();
 // c.removeAdmin("Andrew","Sally Bob");
 // c.addUser("Billy Bob", "password@gmail.com", "password");
 // c.createMessage(2,"gopro@gmail.com","re:hey","Nothing much, you?");

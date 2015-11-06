@@ -21,11 +21,29 @@ router.post("/add", function(req, res){
 		CollabInt.createMessage(req.currentUser.dataValues.id, req.body.friendEmail, "Friend Request", body);
 		res.redirect("/");
 	});
-
-
-
-
 });
 
+router.get("/add/:email", function(req, res){
+	var hasFriend = false;
+	db.user.find({where:{
+		name: res.locals.name
+	}}).then(function(name){
+  	   name.getFriend().then(function(friends){
+  	   	friends.forEach(function(person){
+  	   		if(person.email == req.params.email){
+  	   			hasFriend = true;
+  	   		}
+  	   	});
+  	   	if(!hasFriend){
+  	   		console.log("added");
+		var body = "Hey please add me as a friend. Here is my email: " + name.email;
+		CollabInt.addFriend(req.name, req.body.friendEmail);
+		CollabInt.createMessage(req.currentUser.dataValues.id, req.params.email, "Friend Request", body);
+		}
+		res.redirect("/users");
+		});
+
+	});
+});
 
 module.exports = router;
