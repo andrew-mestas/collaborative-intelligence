@@ -256,7 +256,7 @@ var count = 0;
 
 db.category.findAll({
 	include: [db.question],
-	order: [[db.question, "id"]]
+	order: [[db.question, "categoryId"]]
 }).then(function(questionItem){
 db.question.findAll({
 	include: [db.answer],
