@@ -1,0 +1,23 @@
+<style>
+  a{
+    color: #31DE1D;
+  }
+</style>
+		<div class="row">
+        <%for(var i=0;i<Object.keys(questions).length;i++){%>
+         <%if(questions[i].active){%>
+
+        <div class="col s6 m4">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+
+              <span class="card-title">Poll</span>
+              <a href="poll/<%=questions[i].id%>"><h3><%=questions[i].question%> </h3></a>
+   
+
+            </div>
+           
+          </div>
+        </div>
+
+      <%}}%>

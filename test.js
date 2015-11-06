@@ -493,6 +493,15 @@ var addChoices = function(choices, callback){
 };
 
 
+CollabInt.prototype.getQuestions = function(res){
+	var currentQuestions = {};
+	db.poll.findAll().then(function(polls){
+		polls.forEach(function(poll,i){
+		currentQuestions[i] = poll;
+		});
+	res.render("questions", {questions: currentQuestions});
+});
+};
 
 CollabInt.prototype.addPoll = function(category, question, choices, active, res, user){
 db.poll.findOrCreate({where:{

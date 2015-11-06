@@ -6,6 +6,7 @@
     margin-left: 20px;
 
   }
+
  table.dataTable, thead{
   background: #1E6AC2;
  }
@@ -13,7 +14,13 @@
   background: #373832;
   color: #67FFD5;
  }
-
+ .questions{
+  height: 138px;
+  overflow: auto;
+ }
+a{
+  color: white;
+}
   .lists{
     height: 150px;
   }
@@ -31,12 +38,15 @@
       </div>
 
       <div class="col s3 center-align lists">
-        <h4>Current Questions</h4><hr>
+        <h4><a href="/questions">Current Questions</a></h4><hr>
         <%if(questions){ %> 
+                <div class="questions">
+
         <%for(var i=0;i<Object.keys(questions).length;i++){%>
          <%if(questions[i].active){%>
            <a href="poll/<%=questions[i].id%>"><h6><%=questions[i].question%> </h6></a>
         <%}}}%>
+        </div>
       </div>
 
       <div class="col s3 center-align lists">

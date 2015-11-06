@@ -131,6 +131,10 @@ router.get("/closePoll/:id", function(req, res){
 	res.redirect("/");
 });
 
+router.get("/questions", function(req, res){
+	CollabInt.getQuestions(res);
+});
+
 router.get("/poll/:id", function(req, res){
 	if(req.session.user == undefined){
 		req.flash("danger", "Please log in");
