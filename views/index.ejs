@@ -40,7 +40,7 @@ a{
       <div class="col s3 center-align lists">
         <h4><a href="/questions">Current Questions</a></h4><hr>
         <%if(questions){ %> 
-                <div class="questions">
+         <div class="questions">
 
         <%for(var i=0;i<Object.keys(questions).length;i++){%>
          <%if(questions[i].active){%>
@@ -51,10 +51,12 @@ a{
 
       <div class="col s3 center-align lists">
         <%if(friends){ %>
+         <div class="questions">
           <h4>Friends</h4><hr>   
         <%friends.friend.forEach(function(friend){ %>
           <p><%=friend.name%></p>
         <% });%>
+        </div>
         </div>
 
       <div class="input-field col s3">
