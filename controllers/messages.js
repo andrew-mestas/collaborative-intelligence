@@ -5,6 +5,11 @@ var CollabInt = require("../test.js");
 CollabInt = new CollabInt();
 
 router.get("/",function(req, res){
+	if(req.session.user == undefined){
+	req.flash("danger", "Please log in");
+	res.redirect("/");
+	}
+	
 	CollabInt.getMessage(req.session.user, res);
 })
 
@@ -14,16 +19,28 @@ router.post("/send", function(req, res){
 });
 
 router.get("/friends", function(req, res){
+	if(req.session.user == undefined){
+	req.flash("danger", "Please log in");
+	res.redirect("/");
+	}
 	CollabInt.getFriend(req.session.user, req);
 });
 
 router.get("/users", function(req, res){
+	if(req.session.user == undefined){
+	req.flash("danger", "Please log in");
+	res.redirect("/");
+	}
 	CollabInt.getUsers(res, req);
 
 });
 
 
 router.get("/add/:email", function(req, res){
+	if(req.session.user == undefined){
+	req.flash("danger", "Please log in");
+	res.redirect("/");
+	}
 	var hasFriend = false;
 	db.user.find({where:{
 		name: res.locals.name

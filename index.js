@@ -82,9 +82,9 @@ app.use("/message", messages);
 ////////////////////////////////////////////////////
 
 
-// app.get("/", function(req, res){
-// 	res.render("index");
-// });
+app.get("/:something", function(req, res){
+	res.redirect("/");
+});
 
 
 http.listen(process.env.PORT || 3000, function(){

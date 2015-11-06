@@ -94,6 +94,11 @@ router.route("/signup")
 	});
 
 router.get("/ask", function(req, res){
+	if(req.session.user == undefined){
+		req.flash("danger", "Please log in");
+		res.redirect("/");
+	}
+	
 	res.render("askQuesion");
 });
 var dataF = {};
@@ -127,6 +132,10 @@ router.get("/closePoll/:id", function(req, res){
 });
 
 router.get("/poll/:id", function(req, res){
+	if(req.session.user == undefined){
+		req.flash("danger", "Please log in");
+		res.redirect("/");
+	}
 	
 	CollabInt.getPoll(req.params.id, res, req.session.user);
 	// res.render("poll", {data: dataF});
