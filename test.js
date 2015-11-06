@@ -399,25 +399,52 @@ db.user.find({where: {
 				count= counter;
 				// console.log("\nCategory:",qt.dataValues.name);
 				data["categories"].push(qt.dataValues.name);
+				counter++;
+								console.log(counter,"COUNT");
+
 			questionItem[cat].dataValues.questions.forEach(function(q, i){
-				questionsCat[que] = q.dataValues.question;
-				questionsCat2[que] = q.dataValues.id;				
-				// console.log(q.dataValues.question, que
+
+
+			if(q.dataValues.categoryId == counter)
+			{
+			 questionsCat[que] = q.dataValues.question;
+			 questionsCat2[que] = q.dataValues.id;				
+
+ 			 que++;
+			} 		
+			console.log(q.dataValues.question, que);
+
 		    });
-				ans++;
-		   		que++;
-		    	data.data["questions"].push(questionsCat);
-		    	questionsTo.push(questionsCat2);
-		    	questionsCat = {};
-		    	cat++;
+				// ans++;
+			data.data["questions"].push(questionsCat);
+			questionsTo.push(questionsCat2);
+
+			que =0;
+			questionsCat = {};
+			questionsCat2 = {};
+	    	cat++;
 		});
 
 	var questionsArr = [];
 			console.log("GOT THESE",questionsTo);
 	questionsTo.forEach(function(ques, y){
-		questionsArr.push(ques[y]);
+		for(var i=0;i<Object.keys(ques).length; i++){
+		questionsArr.push(ques[i]);
+		}
 	});
 		console.log("TURNED INTO",questionsArr);
+
+async.concat(questionsArr, getAnswers, function(err, result){		
+ console.log("RESULS", result);
+	result.forEach(function(adding, i){
+
+		if(i%2==0){
+		data.data["answers"].push(adding);
+		} else {
+		data.data["ranks"].push(adding);
+		}
+ 	});
+});
 
 	if(req.session.user){
 		db.user.findById(req.session.user).then(function(user){
