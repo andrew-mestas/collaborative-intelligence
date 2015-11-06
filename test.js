@@ -350,10 +350,11 @@ var getQuestions = function(id, callback){
 var questionList = {};
 var arr = [];
 			db.question.findAll({where:{
-			categoryId : id
+			categoryId : id,
+			include: [db.answer]
 		}}).then(function(answe){
 			answe.forEach(function(a,y){
-			questionList[y] = a.dataValues.question ;			
+			questionList[y] = a.dataValues.question;			
 			
 			});
 			callback(null, questionList);
@@ -378,6 +379,7 @@ var friends = [];
 var currentQuestions = {};
 var messages = [];
 var queArr=[];
+var tte= [];
 // console.log(userName == "false");
 
 if(userName == "false"){
@@ -401,99 +403,42 @@ db.user.find({where: {
 			return false;
 	   };
 
-		db.category.findAll({
-			order: ["id"],
+	db.category.findAll({
+			order: ["id",[db.question, "id"]],
 			include: [db.question],
-		}).then(function(questionItem){
+		}).then(function(categoryItem){
 		db.question.findAll({
 			include: [db.answer],
-			order: ["categoryId"]
-		}).then(function(answerItem){
+			order: [[db.answer, "questionId"]]
+		}).then(function(questionItem){
 
-
-			answerItem.forEach(function(que){
-				queArr.push(que.dataValues.categoryId);
-			});
-			var result = [];
-			queArr.forEach(function(item) {
-     		if(result.indexOf(item) < 0) {
-         		result.push(item);
-     		}
-			});
-			console.log("categories", queArr);
-
-			questionItem.forEach(function(qt, counter){
+			categoryItem.forEach(function(qt, counter){
 				count= counter;
-				// console.log("\nCategory:",qt.dataValues.name);
+				console.log("\nCategory:",qt.dataValues.name);
 				data["categories"].push(qt.dataValues.name);
-				counter++;
-				console.log(counter,"COUNT");
-
-			questionItem[cat].dataValues.questions.forEach(function(q, i){
-
-			if(q.dataValues.categoryId == cat+1)
-			{
-			 questionsCat[que] = q.dataValues.categoryId;
-			 questionsCat2[que] = q.dataValues.id;				
-
- 			 que++;
-			} 		
-			console.log(q.dataValues.question, que);
-
+			categoryItem[cat].dataValues.questions.forEach(function(q, i){
+				questionsCat[que] = q.dataValues.question;
+				console.log(q.dataValues.question, que)
+			questionItem[que].dataValues.answers.forEach(function(an, y){
+				console.log("Answer:",an.dataValues.answer,"\n");
+				// console.log("Rank:",an.dataValues.rank,"\n");
+				var answerToPut = an.dataValues.answer;
+				var rankToPut = an.dataValues.rank;
+				answerList[y]  =  answerToPut;
+				rankList[y] = rankToPut;
+		  	  });
+				data.data["answers"].push(answerList);
+				data.data["ranks"].push(rankList);
+				answerList = {};
+				rankList = {};
+				ans++;
+		   		que++;
 		    });
-				// ans++;
-			// data.data["questions"].push(questionsCat);
-			questionsTo.push(questionsCat2);
-			// wt.push(questionsCat);
-
-			que =0;
-			questionsCat = {};
-			questionsCat2 = {};
-	    	cat++;
+		    	data.data["questions"].push(questionsCat);
+		    	questionsCat = {};
+		    	cat++;
 		});
-
-	var questionsArr = [];
-	var tte= [];
-			console.log("GOT THESE",questionsTo);
-
-	questionsTo.forEach(function(ques, y){
-		for(var i=0;i<Object.keys(ques).length; i++){
-		questionsArr.push(ques[i]);
-		}
-	});
-
-	// wt.forEach(function(ques, y){
-	// 	for(var i=0;i<Object.keys(ques).length; i++){
-	// 	tte.push(ques[i]);
-	// 	}
-	// });
-		// console.log("TURNED INTO",questionsArr);
-// 		function sortNumber(a,b) {
-//     return a - b;
-// }
-
- console.log(questionsArr);
- // questionsArr.sort(sortNumber);
-async.concat(questionsArr, getAnswers, function(err, result){		
-	result.forEach(function(adding, i){
-
-		if(i%2==0){
-		data.data["answers"].push(adding);
-		} else {
-		data.data["ranks"].push(adding);
-		}
- 	});
-});
-
-async.concat(result, getQuestions, function(err, result){
-		 console.log("MORE CATS", result);
-	result.forEach(function(adding, i){
-
-		data.data["questions"].push(adding);
-	});
-});
-
-
+			res.send(data);
 
 	if(req.session.user){
 		db.user.findById(req.session.user).then(function(user){
