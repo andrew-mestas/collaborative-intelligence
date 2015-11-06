@@ -400,12 +400,11 @@ db.user.find({where: {
 				// console.log("\nCategory:",qt.dataValues.name);
 				data["categories"].push(qt.dataValues.name);
 				counter++;
-								console.log(counter,"COUNT");
+				console.log(counter,"COUNT");
 
 			questionItem[cat].dataValues.questions.forEach(function(q, i){
 
-
-			if(q.dataValues.categoryId == counter)
+			if(q.dataValues.categoryId == cat)
 			{
 			 questionsCat[que] = q.dataValues.question;
 			 questionsCat2[que] = q.dataValues.id;				
