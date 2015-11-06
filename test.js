@@ -468,12 +468,12 @@ db.user.find({where: {
 	// 	}
 	// });
 		// console.log("TURNED INTO",questionsArr);
-		function sortNumber(a,b) {
-    return a - b;
-}
+// 		function sortNumber(a,b) {
+//     return a - b;
+// }
 
  console.log(questionsArr);
- questionsArr.sort(sortNumber);
+ // questionsArr.sort(sortNumber);
 async.concat(questionsArr, getAnswers, function(err, result){		
 	result.forEach(function(adding, i){
 
