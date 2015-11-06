@@ -404,7 +404,7 @@ db.user.find({where: {
 
 			questionItem[cat].dataValues.questions.forEach(function(q, i){
 
-			if(q.dataValues.categoryId == cat)
+			if(q.dataValues.categoryId == cat+1)
 			{
 			 questionsCat[que] = q.dataValues.question;
 			 questionsCat2[que] = q.dataValues.id;				
