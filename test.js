@@ -469,11 +469,11 @@ async.concat(questionsArr, getAnswers, function(err, result){
 		message.forEach(function(message){
 		messages.push(message.dataValues.title, message.dataValues.content);
 		});
-res.send(data);
+// res.send(data);
 	if(userName){
-	// res.render("index", {data: data, friends: friendObj, questions: currentQuestions, user:true, messages: messages});
+	res.render("index", {data: data, friends: friendObj, questions: currentQuestions, user:true, messages: messages});
 	} else {
-	// res.render("index", {data: data, user: false});
+	res.render("index", {data: data, user: false});
 	}
 	});
 	});
