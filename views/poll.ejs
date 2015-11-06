@@ -102,7 +102,9 @@ $(".clickable").click(function(){
 		var location = $(this)[0].id;
 		var pollId = $(".pollId").data("id");
 		var update = pollId+","+location+","+newData[location].label;
-if(toggle){
+    if(localStorage.getItem(pollId) == null || localStorage.getItem(pollId) == undefined)
+    {
+      if(toggle){
 		socket.emit('message',update);
 		myDoughnutChart.segments[location].value++;
 		myDoughnutChart.update();
@@ -111,7 +113,11 @@ if(toggle){
       button[i].className += " disabled";
     }
     toggle = false;
+    localStorage.setItem(pollId, true);
   }
+} else {
+  Materialize.toast("You already voted cheater!", 5000);
+}
 
 	});
 
@@ -121,12 +127,16 @@ $(".closePoll").click(function(){
 });
 
 socket.on('closed', function(msg){
-  $("ow1").text("This poll is closed");
-  $("ow2").text("");
+  Materialize.toast("This poll is closed", 5000);
+  setTimeout(function(){window.open("/", "_self");}, 4000);
+
 });
 
  socket.on('This is broadcast', function(msg){
- 	if(msg[0] == $(".pollId").data("id")){
+
+  var newMsg = msg.split(",");
+    console.log(newMsg);
+ 	if(newMsg[0] == $(".pollId").data("id")){
  	var vals = msg.split(",");
  	 myDoughnutChart.segments[vals[1]].value++;
 	 myDoughnutChart.update();
