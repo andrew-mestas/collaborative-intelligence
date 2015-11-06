@@ -144,4 +144,7 @@ router.get("/poll/:id", function(req, res){
 	CollabInt.getPoll(req.params.id, res, req.session.user);
 	// res.render("poll", {data: dataF});
 });
+router.get("/about", function(req, res){
+	res.render("about");
+});
 module.exports = router;
