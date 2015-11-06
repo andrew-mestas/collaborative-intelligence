@@ -438,7 +438,7 @@ db.user.find({where: {
 		    	questionsCat = {};
 		    	cat++;
 		});
-			res.send(data);
+			// res.send(data);
 
 	if(req.session.user){
 		db.user.findById(req.session.user).then(function(user){
@@ -463,11 +463,11 @@ db.user.find({where: {
 		message.forEach(function(message){
 		messages.push(message.dataValues.title, message.dataValues.content);
 		});
-res.send(data);
+// res.send(data);
 	if(userName){
-	// res.render("index", {data: data, friends: friendObj, questions: currentQuestions, user:true, messages: messages});
+	res.render("index", {data: data, friends: friendObj, questions: currentQuestions, user:true, messages: messages});
 	} else {
-	// res.render("index", {data: data, user: false});
+	res.render("index", {data: data, user: false});
 	}
 	});
 	});
