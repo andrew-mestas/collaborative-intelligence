@@ -409,7 +409,7 @@ db.user.find({where: {
 		}).then(function(categoryItem){
 		db.question.findAll({
 			include: [db.answer],
-			order: ["id"]
+			order: ["id",[db.answer,"questionId"]]
 		}).then(function(questionItem){
 
 			categoryItem.forEach(function(qt, counter){
@@ -614,10 +614,31 @@ CollabInt.prototype.createMessage = function(from, to, title, body){
 	answered: false
 }}).then(function(messageItem){
 });
-
-	});
-
+});
 }
+
+CollabInt.prototype.createMessageName = function(from, to, title, body){
+	db.user.find({where:{
+		name: from
+	}}).then(function(sender){
+		console.log(sender);
+	db.user.find({where:{
+		name: to
+	}}).then(function(person){		
+	db.message.findOrCreate({where:{
+	from: sender.id,
+	to: person.id,
+	title: title,
+	content: body,
+	userId: sender.id,
+	answered: false
+}}).then(function(messageItem){
+	});
+});
+});
+}
+
+
 
 CollabInt.prototype.getMessage = function(user, res){
 	var messages = [];

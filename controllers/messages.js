@@ -8,8 +8,13 @@ router.get("/",function(req, res){
 	CollabInt.getMessage(req.session.user, res);
 })
 
-router.get("/send", function(req, res){
-	res.send(req.body);
+router.post("/send", function(req, res){
+	console.log(req.body);
+	CollabInt.createMessageName(req.body.from, req.body.to, req.body.title, req.body.content);
+});
+
+router.get("/friends", function(req, res){
+	CollabInt.getFriend(req.session.user, req);
 });
 
 module.exports = router;
