@@ -8,5 +8,9 @@ router.get("/",function(req, res){
 	CollabInt.getMessage(req.session.user, res);
 })
 
+router.get("/send", function(req, res){
+	res.send(req.body);
+});
+
 module.exports = router;
 

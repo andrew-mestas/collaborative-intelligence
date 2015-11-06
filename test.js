@@ -409,7 +409,7 @@ db.user.find({where: {
 		}).then(function(categoryItem){
 		db.question.findAll({
 			include: [db.answer],
-			order: [[db.answer, "questionId"]]
+			order: ["id"]
 		}).then(function(questionItem){
 
 			categoryItem.forEach(function(qt, counter){
