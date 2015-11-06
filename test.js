@@ -303,7 +303,7 @@ db.question.findAll({
 	} else {
 		req.currentUser = false;
 	}
-	console.log(req.session);
+	// console.log(req.session);
 	if(res){
 	res.render("index", {data: data, friends: " "});
 	} else {
@@ -346,11 +346,25 @@ var rankList = {};
 }
 
 
+var getQuestions = function(id, callback){
+var questionList = {};
+var arr = [];
+			db.question.findAll({where:{
+			categoryId : id
+		}}).then(function(answe){
+			answe.forEach(function(a,y){
+			questionList[y] = a.dataValues.question ;			
+			
+			});
+			callback(null, questionList);
+		});
+}
 
 CollabInt.prototype.allData = function(req, res, userName){
 
 var data = {"categories": [], data: {"questions": [], "answers" : [], "ranks": []}};
 var questionsTo = [];
+var wt   = [];
 var cat = 0,
 	que = 0,
 	ans = 0;
@@ -363,6 +377,7 @@ var friendObj = {};
 var friends = [];
 var currentQuestions = {};
 var messages = [];
+var queArr=[];
 // console.log(userName == "false");
 
 if(userName == "false"){
@@ -392,8 +407,20 @@ db.user.find({where: {
 		}).then(function(questionItem){
 		db.question.findAll({
 			include: [db.answer],
-			order: ["categoryId",[db.answer, 'id']]
+			order: ["categoryId"]
 		}).then(function(answerItem){
+
+
+			answerItem.forEach(function(que){
+				queArr.push(que.dataValues.categoryId);
+			});
+			var result = [];
+			queArr.forEach(function(item) {
+     		if(result.indexOf(item) < 0) {
+         		result.push(item);
+     		}
+			});
+			console.log("categories", queArr);
 
 			questionItem.forEach(function(qt, counter){
 				count= counter;
@@ -406,7 +433,7 @@ db.user.find({where: {
 
 			if(q.dataValues.categoryId == cat+1)
 			{
-			 questionsCat[que] = q.dataValues.question;
+			 questionsCat[que] = q.dataValues.categoryId;
 			 questionsCat2[que] = q.dataValues.id;				
 
  			 que++;
@@ -415,8 +442,9 @@ db.user.find({where: {
 
 		    });
 				// ans++;
-			data.data["questions"].push(questionsCat);
+			// data.data["questions"].push(questionsCat);
 			questionsTo.push(questionsCat2);
+			// wt.push(questionsCat);
 
 			que =0;
 			questionsCat = {};
@@ -425,16 +453,28 @@ db.user.find({where: {
 		});
 
 	var questionsArr = [];
+	var tte= [];
 			console.log("GOT THESE",questionsTo);
+
 	questionsTo.forEach(function(ques, y){
 		for(var i=0;i<Object.keys(ques).length; i++){
 		questionsArr.push(ques[i]);
 		}
 	});
-		console.log("TURNED INTO",questionsArr);
 
+	// wt.forEach(function(ques, y){
+	// 	for(var i=0;i<Object.keys(ques).length; i++){
+	// 	tte.push(ques[i]);
+	// 	}
+	// });
+		// console.log("TURNED INTO",questionsArr);
+		function sortNumber(a,b) {
+    return a - b;
+}
+
+ console.log(questionsArr);
+ questionsArr.sort(sortNumber);
 async.concat(questionsArr, getAnswers, function(err, result){		
- console.log("RESULS", result);
 	result.forEach(function(adding, i){
 
 		if(i%2==0){
@@ -444,6 +484,16 @@ async.concat(questionsArr, getAnswers, function(err, result){
 		}
  	});
 });
+
+async.concat(result, getQuestions, function(err, result){
+		 console.log("MORE CATS", result);
+	result.forEach(function(adding, i){
+
+		data.data["questions"].push(adding);
+	});
+});
+
+
 
 	if(req.session.user){
 		db.user.findById(req.session.user).then(function(user){
@@ -468,11 +518,11 @@ async.concat(questionsArr, getAnswers, function(err, result){
 		message.forEach(function(message){
 		messages.push(message.dataValues.title, message.dataValues.content);
 		});
-// res.send(data);
+res.send(data);
 	if(userName){
-	res.render("index", {data: data, friends: friendObj, questions: currentQuestions, user:true, messages: messages});
+	// res.render("index", {data: data, friends: friendObj, questions: currentQuestions, user:true, messages: messages});
 	} else {
-	res.render("index", {data: data, user: false});
+	// res.render("index", {data: data, user: false});
 	}
 	});
 	});
