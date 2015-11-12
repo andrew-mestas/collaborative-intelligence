@@ -51,10 +51,10 @@ a{
 
       <div class="col s3 center-align lists">
         <%if(friends){ %>
-         <div class="questions">
           <h4>Friends</h4><hr>   
+          <div class="questions">
         <%friends.friend.forEach(function(friend){ %>
-          <p><%=friend.name%></p>
+          <p><h6><%=friend.name%></h6></p>
         <% });%>
         </div>
         </div>
@@ -70,58 +70,34 @@ a{
      </div>
       <%}%>
       </div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row" id="chips">
+ <div class="chip">Category</div>
+  </div>
+<div class="row">
+  <div class="col s12 lists category">
+    <h4>Categories</h4><hr>
+     <%for(var i in data.categories){%>
+     <%var cat = i;%>
+     <%cat++%>
+      <a class="waves-effect waves-light btn cats" data-go="<%=cat%>"><h6><%=data.categories[i]%></h6></a>
+      <%}%>
+    </div>
 
-    <h4>Closed Questions</h4><hr>
-    <%if(data){%>  
-    <%var totalQuestions = 0;%>
-    <%for(var r=0; r<data.data.questions.length; r++) { %>
-    <%totalQuestions += (Object.keys(data.data.questions[r]).length);%>
-    <%}%>
-    <%}%>
-    <div class ="table">
-      <div class="col s12">
-        <table id="myTable" class="myTable" >
-          <thead>          
-            <tr>
-              <th data-field="category">Category</th>
-              <th data-field="question">Question</th>
-              <th data-field="answer">Answer</th>
-              <th data-field="rank">Rank</th>
-            </tr>
-          </thead>
+  <div class="col s12 lists question">
+    <h4 id="questionList">Questions</h4><hr>
+    </div>
 
-        <tbody>
+  <div class="col s6 lists answer">
+    <h4>Answers</h4><hr>
+    </div>
+ 
+  <div class="col s6 lists rank">
+    <h4>Ranks</h4><hr>
+  </div>
 
-    <%if(data){%>  
-        <%var count=-1;%>
-        <%console.log(data.data.answers);%>
-        <%for(var t=0; t < Object.keys(data.categories).length; t++) {%>
-        <%for(var i = 0; i < Object.keys(data.data.questions[t]).length; i++) { %>
-          <tr>
-              <%count++;%>
-            <td><%=data.categories[t]%></td>
-            <td><%=data.data.questions[t][count]%></td>
-          <td>
-        <%for(var d=0; d < Object.keys(data.data.answers[count]).length; d++) { %>
-            <%=data.data.answers[count][d]%><br>
-         <%}%>
-        </td>
-         <td>
-         <%for(var c=0; c < Object.keys(data.data.ranks[count]).length; c++) { %>
-            <%=data.data.ranks[count][c]%><br>
-         <%}%>
-         </td>
-           <%}%>
-           <%}%>
-          </tr>
-<%}%>
-
-        </tbody>
-        </table>
-
-      </div>
-      </div>
-      </div>
+  </div>
 
     </div>
 <%} else { %>
@@ -147,16 +123,5 @@ a{
   </div>
 
 <%}%>
-    <script >
-
-$(document).ready(function(){
-    $('#myTable').DataTable();
-    var data = document.getElementsByClassName("table");
-    if(data.length > 0){
-    $(".badge")[0].innerHTML = $("#messages").text();
-    $(".badge")[1].innerHTML = $("#messages").text();
-    }
-});
-
-</script>
+<script src="home.js"> </script>
 

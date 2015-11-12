@@ -408,39 +408,11 @@ db.user.find({where: {
 			order: ["id",[db.question, "id"]],
 			include: [db.question],
 		}).then(function(categoryItem){
-		db.question.findAll({
-			include: [db.answer],
-			order: ["id",[db.answer,"questionId"]]
-		}).then(function(questionItem){
-
 			categoryItem.forEach(function(qt, counter){
-				count= counter;
-				console.log("\nCategory:",qt.dataValues.name);
-				data["categories"].push(qt.dataValues.name);
-			categoryItem[cat].dataValues.questions.forEach(function(q, i){
-				questionsCat[que] = q.dataValues.question;
-				console.log(q.dataValues.question, que)
-			questionItem[que].dataValues.answers.forEach(function(an, y){
-				console.log("Answer:",an.dataValues.answer,"\n");
-				// console.log("Rank:",an.dataValues.rank,"\n");
-				var answerToPut = an.dataValues.answer;
-				var rankToPut = an.dataValues.rank;
-				answerList[y]  =  answerToPut;
-				rankList[y] = rankToPut;
-		  	  });
-				data.data["answers"].push(answerList);
-				data.data["ranks"].push(rankList);
-				answerList = {};
-				rankList = {};
-				ans++;
-		   		que++;
-		    });
-		    	data.data["questions"].push(questionsCat);
-		    	questionsCat = {};
-		    	cat++;
+			console.log("\nCategory:",qt.dataValues.name);
+			data["categories"].push(qt.dataValues.name);
 		});
-			// res.send(data);
-
+		
 	if(req.session.user){
 		db.user.findById(req.session.user).then(function(user){
 			if(user){
@@ -475,7 +447,7 @@ db.user.find({where: {
 	});
 
 		});
-	 });
+	 // });
     } else {
     	return false;
     }

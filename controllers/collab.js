@@ -147,4 +147,22 @@ router.get("/poll/:id", function(req, res){
 router.get("/about", function(req, res){
 	res.render("about");
 });
+
+router.post("/category/:id", function(req, res){
+	db.question.findAll({where: {
+		categoryId : req.params.id
+	}}).then(function(answers){
+		res.send(answers);
+	})
+});
+
+router.post("/question/:id/:cat", function(req, res){
+	db.answer.findAll({where: {
+		questionId : req.params.id,
+		categoryId : req.params.cat
+	}}).then(function(answers){
+		res.send(answers);
+	})
+});
+
 module.exports = router;
