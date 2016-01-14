@@ -628,16 +628,18 @@ CollabInt.prototype.createMessageName = function(from, to, title, body){
 CollabInt.prototype.getMessage = function(user, res){
 	var messages = [];
 	var info = [];
+	var date = {};
 	db.message.findAll({where:{
 		to: user
 	}}).then(function(message){
 		message.forEach(function(message){
-			info.push(message.to, message.from);
+			// info.push(message.to, message.from);
+			info.push(message.createdAt);
 		messages.push(message.dataValues.title, message.dataValues.content);
 		});
 	console.log(info);
 
-		res.render("message", {name: res.locals.name, messages: messages});
+		res.render("message", {name: res.locals.name, messages: messages, info});
 
 		
 	});

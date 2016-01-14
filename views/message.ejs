@@ -18,7 +18,11 @@
 <ul class="collapsible" data-collapsible="accordion">
 <%for(var i =0; i< messages.length; i+=2){ %>
     <li>
-      <div class="collapsible-header"><i class="material-icons">message</i><%=messages[i]%><a class="waves-effect waves-light btn right reply" data-me="<%=i%>"><i class="material-icons center" data-me="<%=i%>">done</i></a></div>
+      <div class="collapsible-header"><i class="material-icons">message</i><%=messages[i]%> 
+      <!-- 
+      <% var date = new Date(info[i]) %> <%= date%> -->
+      <!-- <a class="waves-effect waves-light btn right reply" data-me="<%=i%>"><i class="material-icons center" data-me="<%=i%>">done</i></a> -->
+      </div>
       <div class="collapsible-body"><p><%=messages[i+1]%></p>
       </div>
 
