@@ -131,9 +131,9 @@ router.get("/closePoll/:id", function(req, res){
 	res.redirect("/");
 });
 
-router.get("/questions", function(req, res){
-	CollabInt.getQuestions(res);
-});
+// router.get("/questions", function(req, res){
+// 	CollabInt.getQuestions(res);
+// });
 
 router.get("/poll/:id", function(req, res){
 	if(req.session.user == undefined){
@@ -146,6 +146,19 @@ router.get("/poll/:id", function(req, res){
 });
 router.get("/about", function(req, res){
 	res.render("about");
+});
+
+router.get("/questions", function(req, res){
+	var info = {};
+	db.poll.findAll({
+		'include': [{'model': db.user, 'attributes': ['name']}],
+		attributes: ['id', 'category', 'question']}
+	).then(function(polls){
+		// polls.forEach(function(p){
+		// 	info[p.id] = p.user.name;
+		// });
+		res.render("questions", {polls, name: req.session.userName});
+		});
 });
 
 router.post("/category/:id", function(req, res){

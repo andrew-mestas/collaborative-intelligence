@@ -48,6 +48,9 @@ h5 { font-size: .83em; }
 h6 { font-size: .75em; }
 label{font-size: .75em;}
 
+.inactive{
+  background: grey;
+}
   </style>
 </head>
 <script>
@@ -62,11 +65,13 @@ label{font-size: .75em;}
       <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down">
       <%if (currentUser) { %>
-        <li><a href="logout">Log out</a></li>
-        <li><a href="/message">Messages<span class="new badge"></span></a></li>
-        <li><a href="/ask">Ask</a></li>
-        <li><a href="#">Pro</a></li>
         <li><a href="/message/users">Users</a></li>
+        <!-- <li><a href="/message">Messages<span class="new badge"></span></a></li> -->
+        <li class="inactive"><a href="#">Rooms <small>coming soon</small></a></li>
+        <li><a href="/questions">Questions</a></li>
+        <li><a href="/ask">Ask</a></li>
+        <li class="inactive"><a href="#">Pro <small>coming soon</small></a></li>
+        <li><a href="logout">Log out</a></li>
       <% } else { %>
         <li><a href="login">Sign Up / Login</a></li>
       <% } %>
@@ -75,11 +80,13 @@ label{font-size: .75em;}
       <ul class="side-nav" id="mobile-demo">
       	<li><a href="/">Collaborative Intelligence</a></li>
       <%if (currentUser) { %>
-        <li><a href="logout">Log out</a></li>
-        <li><a href="/message">Messages<span class="new badge"></span></a></li>
+        <li><a href="/message/users">Users</a></li>
+        <!-- <li><a href="/message">Messages<span class="new badge"></span></a></li> -->
+        <li><a href="#">Rooms</a></li>
+        <li><a href="/questions">Questions</a></li>
         <li><a href="/ask">Ask</a></li>
         <li><a href="#">Pro</a></li>
-        <li><a href="/message/users">Users</a></li>
+        <li><a href="logout">Log out</a></li>
       <% } else { %>
         <li><a href="login">Sign Up / Login</a></li>
       <% } %>

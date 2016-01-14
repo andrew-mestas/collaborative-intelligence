@@ -426,7 +426,10 @@ db.user.find({where: {
 		req.currentUser = false;
 	}
 
-	db.poll.findAll().then(function(polls){
+	db.poll.findAll({where: {
+		userId : req.currentUser.id
+	}}).then(function(polls){
+		console.log(polls)
 		polls.forEach(function(poll,i){
 		currentQuestions[i] = poll;
 		});

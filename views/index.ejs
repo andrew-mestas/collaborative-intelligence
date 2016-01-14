@@ -27,9 +27,8 @@ a{
 </style> <%console.log("TESTING", data);%>
     
     <!-- Page Layout here -->
-    <div class="row" hidden id="messages">
-    <%=Math.floor(messages.length/2)%>
-    </div>
+    <!-- <div class="row" hidden id="messages"> -->
+    <!-- </div> -->
     <div class="row">
 
     <%if(user){%>
@@ -60,12 +59,12 @@ a{
         </div>
 
       <div class="input-field col s3">
-        <form action="/friends/add" method="post">
-        <input id="friendEmail" type="email" name="friendEmail" class="validate" required="" aria-required="true">
-         <label for="friendEmail">Email</label>
+        <!-- <form action="/friends/add" method="post"> -->
+        <input id="createRoom" type="text" name="createRoom" class="validate" required="" aria-required="true">
+         <label for="createRoom">Room Name</label>
         </input>
-        <button>Add Friends</button>
-      </form>
+        <button>Create a Room</button>
+      <!-- </form> -->
       </div>
      </div>
       <%}%>
@@ -104,22 +103,12 @@ a{
 <div class="row"></div>
 <div class="row"></div>
 
-<div class="valign-wrapper">
+
   <div class="row">
-  <div class="col s8 align-center offset-s3">
-  <h1 class="valign">Welcome to</h1>
-  </div>
-    <div class="col s8 align-center offset-s2">
-    <h2>Collaborative Intelligence</h2>
-    </div>
-    <div class="col s6 align-center offset-s3">
+  <div class="col s8 offset-s3">
+  <h1>Welcome to Collaborative Intelligence</h1>
     <h4><i>Where your opinion matters.</i></h4>
     </div>
-      <div class="progress">
-      <div class="indeterminate"></div>
-  </div>
-</div>
-
   </div>
 
 <%}%>
